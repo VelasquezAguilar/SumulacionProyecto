@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presupuesto de Efectivo de la Empresa</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #5C2E91;
+            text-align: center;
+        }
+        p {
+            font-size: 14px;
+            text-align: center;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+        }
+        th {
+            background-color: #5C2E91;
+            color: white;
+        }
+        td {
+            background-color: #f9f9f9;
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .button-container button {
+            background-color: #FF5A3C;
+            color: white;
+            padding: 10px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .button-container button:hover {
+            background-color: #E14A2D;
+        }
+
+        .adaptarP{
+            padding: 0 20px 15px 20px;
+            text-align:justify;
+        }
+        
+        .adaptarP2{
+            padding: 0 20px 15px 20px;
+            text-align: justify;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Presupuesto de Efectivo de la Empresa</h1>
+        <p class="adaptarP">La tabla considerará los flujos de ingresos y egresos para calcular el presupuesto neto. Con este resultado, se podrá determinar si la empresa cuenta con un excedente (flujo positivo de efectivo) o si, por el contrario, será necesario considerar un financiamiento adicional, como un préstamo futuro, para cubrir posibles déficits operativos.</p>
+
+        <p class="adaptarP2">El saldo mínimo debe ser considerado al consolidar los flujos de ingresos y egresos, ya que representa el dinero disponible en caja antes de comenzar las operaciones diarias. Incluir este saldo es esencial para obtener una visión precisa de la liquidez de la empresa, asegurando que los flujos financieros no omitan los recursos iniciales disponibles.</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>MES</th>
+
+                        <th>MARZO</th>
+                        <th>ABRIL</th>
+                        <th>MAYO</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Total Ingresos</td>
+                    <td>290,000</td>
+                    <td>390,000</td>
+                    <td>440,000</td>
+                </tr>
+                <tr>
+                    <td>Total Egresos</td>
+                    <td>336,000</td>
+                    <td>516,000</td>
+                    <td>556,000</td>
+                </tr>
+                <tr>
+                    <td>FNE</td>
+                    <td>-46,000</td>
+                    <td>-126,000</td>
+                    <td>-116,000</td>
+                </tr>
+                <tr>
+                    <td>Efectivo Final</td>
+                    <td>100,000</td>
+                    <td>54,000</td>
+                    <td>-72,000</td>
+                </tr>
+                <tr>
+                    <td>Saldo mínimo de efectivo</td>
+                    <td>25,000</td>
+                    <td>25,000</td>
+                    <td>25,000</td>
+                </tr>
+                <tr>
+                    <td>Financiamiento</td>
+                    <td>0.00</td>
+                    <td>97,000</td>
+                    <td>213,00</td>
+                </tr>
+                <tr>
+                    <td>Ingreso Saldo mínimo</td>
+                    <td>29,000.00</td>
+                    <td>0.00</td>
+                    <td>0.00</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="button-container">
+            <button>Generar Reporte</button>
+            <button>Finalizar</button>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles de la Compañía</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            background-color: #f4f4f4;
+            height: 100vh;
+        }
+
+         /* Estilos para el menú lateral */
+         .sidebar {
+            width: 200px;
+            background-color: #f4f4f4;
+            padding: 20px 10px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+        .sidebar h2 {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 10px;
+            margin-bottom: 10px;
+            text-decoration: none;
+            color: #333;
+            font-size: 1em;
+            border-radius: 5px;
+        }
+
+        .sidebar a:hover {
+            background-color: #ddd;
+        }
+
+        /* Estilos para el contenido principal */
+        .main-content {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .main-content h1 {
+            text-align: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 1.5em;
+            color: #333;
+        }
+
+        .form-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .form-group {
+            flex: 1 1 45%;
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background: #f9f9f9;
+        }
+
+        .image-upload {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .image-upload img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border: 2px dashed #ddd;
+            border-radius: 5px;
+            background: #f9f9f9;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .buttons button {
+            padding: 10px 20px;
+            font-size: 1em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .save-button {
+            background: #d32f2f;
+            color: #fff;
+        }
+
+        .cancel-button {
+            background: #ddd;
+            color: #333;
+        }
+
+        .save-button:hover {
+            background: #b71c1c;
+        }
+
+        .cancel-button:hover {
+            background: #bbb;
+        }
+        
+        .iframe-ubi {
+            width: 36vh;
+            height: 9vh;
+        }
+    </style>
+</head>
+<body>
+    <!-- Menú lateral -->
+    <div class="sidebar">
+        <h2>FutureFinance</h2>
+        <a href="http://localhost:3030/inicio">Inicio</a>
+        <a href="http://localhost:3030/reportes">Reportes</a>
+        <a href="http://localhost:3030/formulario">Prediccion</a>
+        <a href= "">Bases de Datos</a>
+    </div>
+
+    <div class="container container-md mt-5 ">
+        <h1 class="text-center mb-4">Registro de Compañías</h1>
+        <form>
+            <div class="row">
+                <!-- Ventas y detalles del producto -->
+                <div class="col-md-8">
+                    <div class="card p-3 border-0">
+                        <h4 class="m-3 text-center">Ventas y Detalles del Producto</h4><hr>
+                        <div class="row g-3">
+                            <!-- Fecha -->
+                            <div class="col-md-6">
+                                <label for="fecha" class="form-label">Fecha</label>
+                                <input type="date" class="form-control" id="fecha" required>
+                            </div>
+                            <!-- Producto -->
+                            <div class="col-md-6">
+                                <label for="producto" class="form-label">Producto</label>
+                                <select class="form-select" id="producto">
+                                    <option selected disabled>Seleccionar</option>
+                                    <option value="1">Celulares</option>
+                                    <option value="2">Tabletas</option>
+                                    <option value="3">Computadoras</option>
+                                </select>
+                            </div>
+                        </div><br><hr><br>
+                        <div class="row g-3">
+                            
+                            <!-- Precio Unitario -->
+                            <div class="col-md-6">
+                                <label for="precio" class="form-label">Precio Unitario</label>
+                                <input type="number" class="form-control" id="precio" placeholder="0">
+                            </div>
+                            <!-- Tipo de Venta -->
+                            <div class="col-md-6">
+                                <label for="tipoVenta" class="form-label">Tipo de Venta</label>
+                                <select class="form-select" id="tipoVenta">
+                                    <option selected disabled>Seleccionar</option>
+                                    <option value="unitario">Unitario</option>
+                                    <option value="mayorista">Al por Mayor</option>
+                                </select>
+                            </div>
+                            <!-- Publicidad -->
+                            <div class="col-md-6">
+                                <label class="form-label">¿Inversiones en Publicidad?</label>
+                                <select class="form-select" id="publicidad">
+                                    <option value="no" selected>No</option>
+                                    <option value="si">Sí</option>
+                                </select>
+                            </div><br>
+                            <!-- Garantía -->
+                            <div class="col-md-6">
+                                <label class="form-label">Oferta de Garantía</label>
+                                <select class="form-select" id="garantia">
+                                    <option value="no" selected>No</option>
+                                    <option value="si">Sí</option>
+                                </select><br>
+                            </div>
+                            <!-- Edad del segmento -->
+                            <div class="col-md-6">
+                                <label for="edadSegmento" class="form-label">Edad del Segmento de Mercado</label>
+                                <input type="number" class="form-control" id="edadSegmento" placeholder="0">
+                            </div>
+                            <!-- Género del Sector -->
+                            <div class="col-md-6">
+                                <label for="genero" class="form-label">Género del Sector</label>
+                                <select class="form-select" id="genero">
+                                    <option value="general" selected>General</option>
+                                    <option value="m">M</option>
+                                    <option value="f">F</option>
+                                </select>
+                            </div>
+                            <div class="mt-4 text-center">
+                                <br><br>
+                                <button type="submit" class="btn btn-danger"  ><a href="http://localhost:3030/ingresos">Guardar y Continuar</a></button>
+                                <button type="reset" class="btn btn-secondary" ><a href="http://localhost:3030/inicio">Cancelar</a></button>
+                            </div>
+                        </div>
+                    </div>
+            
+                </div>
+      
+                <!-- Datos Logísticos y Generales -->
+                <div class="col-md-4" >
+                    <div class="card p-3 md-3 border-0">
+                        <h5 class="m-3 text-center">Datos Logísticos y Generales</h5><hr>
+                        <!-- Logotipo -->
+                        <div class="text-center">
+                            <label for="logo" class="form-label">Logotipo</label>
+                            <input type="file" class="form-control" id="logo">
+                        </div>
+
+                        <!-- Puntos de Venta -->
+                        <label for="puntosVenta" class="form-label">Puntos de Venta</label>
+                        <select class="form-select" id="puntosVenta">
+                            <option selected disabled>Seleccionar</option>
+                            <option value="fisica">Tienda Física</option>
+                            <option value="Ecommerce">E-commerce</option>
+                        </select>
+
+                        <!-- Canales de Distribución -->
+                        <label for="canales" class="form-label">Canales de Distribución</label>
+                        <select class="form-select" id="canales">
+                            <option selected disabled>Seleccionar</option>
+                            <option value="local">Local</option>
+                            <option value="domicilio">Entrega a domicilio</option>
+                        </select>
+                        
+                        <!-- Tiempos de Entrega -->
+                        <label for="tiempoEntrega" class="form-label">Tiempos de Entrega</label>
+                        <input type="text" class="form-control mb-3" id="tiempoEntrega" placeholder="Inmediato / 1 día">
+                        
+                        <!-- Capital Inicial -->
+                        <label for="capital" class="form-label">Capital Inicial</label>
+                        <input type="number" class="form-control mb-3" id="capital" placeholder="1,000,000">
+                        <!-- Competidores -->
+                        <label class="form-label">Competidores</label>
+                        <select class="form-select" id="garantia">
+                            <option value="no" selected>No</option>
+                            <option value="si">Sí</option>
+                        </select>
+                        <!-- Ubicacion -->
+                         
+                        <label for="ubicacion" class="form-label">Ubicación</label>
+                        <iframe class="iframe-ubi" src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d7739.324859168535!2d-87.2544777283264!3d14.097093911885771!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses-419!2shn!4v1733006888304!5m2!1ses-419!2shn" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+                    </div>
+                </div>
+            </div>
+      
+        <!-- Botones -->
+        
+        </form>
+    </div>
+    
+</body>
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles de la Compañía</title>
+   <!-- <link rel="stylesheet" href="style.css">-->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 1.5em;
+            color: #333;
+        }
+
+        .form-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .form-group {
+            flex: 1 1 45%;
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background: #f9f9f9;
+        }
+
+        .image-upload {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .image-upload img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border: 2px dashed #ddd;
+            border-radius: 5px;
+            background: #f9f9f9;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .buttons button {
+            padding: 10px 20px;
+            font-size: 1em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .save-button {
+            background: #d32f2f;
+            color: #fff;
+        }
+
+        .cancel-button {
+            background: #ddd;
+            color: #333;
+        }
+
+        .save-button:hover {
+            background: #b71c1c;
+        }
+
+        .cancel-button:hover {
+            background: #bbb;
+        }
+    </style>
+</head>
+<body>
+    <h1>Registro de Compañías</h1>
+    <form action="/guardar" method="POST">
+        <label for="fecha">Fecha</label>
+        <input type="date" id="fecha" name="fecha" required><br>
+
+        <label for="producto">Producto</label>
+        <input type="text" id="producto" name="producto" required><br>
+
+        <label for="precio_unitario">Precio Unitario</label>
+        <input type="number" id="precio_unitario" name="precio_unitario" step="0.01" required><br>
+
+        <label for="tipo_venta">Tipo de Venta</label>
+        <select id="tipo_venta" name="tipo_venta" required>
+            <option value="Unitario">Unitario</option>
+            <option value="Por mayor">Mayor</option>
+        </select><br>
+
+        <label for="inversion_publicidad">¿Inversiones en Publicidad?</label>
+        <select id="inversion_publicidad" name="inversion_publicidad" required>
+            <option value="SI">Sí</option>
+            <option value="NO">No</option>
+        </select><br>
+
+        <label for="garantia">Oferta de Garantía</label>
+        <select id="garantia" name="garantia" required>
+            <option value="SI">Sí</option>
+            <option value="NO">No</option>
+        </select><br>
+
+        <label for="edad_segmento">Edad del Segmento</label>
+        <input type="number" id="edad_segmento" name="edad_segmento" required><br>
+
+        <label for="genero_sector">Género del Sector</label>
+        <select id="genero_sector" name="genero_sector" required>
+            <option value="Femenino">Femenino</option>
+            <option value="Masculino">Masculino</option>
+        </select><br>
+
+        <label for="puntos_venta">Puntos de Venta</label>
+        <select id="puntos_venta" name="puntos_venta" required>
+            <option value="Fisica">Fisica</option>
+            <option value="e-commerce">e-commerce</option>
+        </select><br>
+
+        <label for="canales_distribucion">Canales de Distribución</label>
+        <select id="canales_distribucion" name="canales_distribucion" required>
+            <option value="Local">Local</option>
+            <option value="Domicilio">Domicilio</option>
+        </select><br>
+
+        <label for="tiempos_entrega">Tiempos de Entrega</label>
+        <input type="text" id="tiempos_entrega" name="tiempos_entrega" required><br>
+
+        <label for="capital_inicial">Capital Inicial</label>
+        <input type="number" id="capital_inicial" name="capital_inicial" step="0.01" required><br>
+
+        <label for="ubicacion">Ubicación</label>
+        <input type="text" id="ubicacion" name="ubicacion" required><br>
+
+        <label for="competidores">¿Competidores?</label>
+        <input type="checkbox" id="competidores" name="competidores"><br>
+
+        <button type="submit">Guardar y Continuar</button>
+    </form>
+</body>
+</html>

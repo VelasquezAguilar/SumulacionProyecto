@@ -1,0 +1,83 @@
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+        h1 {
+            background-color: #FF5A3C;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            text-align: center;
+            padding: 10px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .highlight {
+            background-color: #FFD5D5;
+        }
+        .button {
+            background-color: #FF5A3C;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 20px;
+            cursor: pointer;
+            display: block;
+            width: 100%;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .btn-continuar {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 20px;
+            cursor: pointer;
+          }
+          
+          button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+          }
+
+        .titulo {
+            background-color: #FF5A3C; /* Color de fondo */
+            color: white;              /* Color del texto */
+            padding: 10px 30px;        /* Espaciado interno */
+            border-radius: 25px;       /* Bordes redondeados */
+            font-size: 18px;           /* Tamaño de fuente */
+            font-weight: bold;         /* Negrita */
+            text-align: center;        /* Centra el texto dentro del contenedor */
+            margin: 0 auto;            /* Centra el elemento en la página */
+            width: fit-content;        /* Ajusta el ancho al contenido */
+        }
+        
+
+        .texto1Info{
+            padding: 40px 30px 15px 30px;
+            text-align:justify;
+        }
+        
+        .texto2Info{
+            padding: 0 30px 15px 30px;
+            text-align: justify;
+        }

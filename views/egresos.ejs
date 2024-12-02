@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presupuesto de Egresos</title>
+    <link rel="stylesheet" href="/css/egresos.css">
+</head>
+<body>
+    <body>
+        <div class="container">
+            <h1 class="titulo">Presupuesto de Egresos</h1>
+            <p class="texto1Info">Para una predicción más precisa de los egresos, es necesario ingresar el total de ingresos correspondientes a la última compra del mes anterior al seleccionado. Esto garantiza que las estimaciones reflejen de manera más realista las tendencias recientes.</p>
+            <p class="texto2Info">La tabla permite al usuario interactuar agregando y modificando estimaciones de otros egresos según sea necesario. Se recomienda incluir información detallada sobre pagos recurrentes, como alquiler de local, sueldos, intereses, compras de maquinaria y abonos a capital. Estas estimaciones deben realizarse en función de las capacidades y actividades actuales del usuario, con el fin de obtener un presupuesto más completo y realista que se ajuste a su situación específica.</p>
+            <table id="egresosTable">
+                <thead>
+                    <tr>
+                        <th>MES</th>
+                        <th>ENERO</th>
+                        <th>FEBRERO</th>
+                        <th>MARZO</th>
+                        <th>ABRIL</th>
+                        <th>MAYO</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Compras</td>
+                        <td>140,000</td>
+                        <td>210,000</td>
+                        <td>280,000</td>
+                        <td>350,000</td>
+                        <td>70,000</td>
+                    </tr>
+                    <tr class="highlight">
+                        <td>Compras en efectivo (70%)</td>
+                        <td>14,000</td>
+                        <td>21,000</td>
+                        <td>28,000</td>
+                        <td>35,000</td>
+                        <td>7,000</td>
+                        <!--<td colspan="5"></td>-->
+                    </tr>
+                    <tr class="highlight">
+                        <td>Vencimiento a un mes (10%)</td>
+                        <td></td>
+                        <td>98,000</td>
+                        <td>147,000</td>
+                        <td>196,000</td>
+                        <td>245,000</td>
+                        <!--<td colspan="5"></td>-->
+                    </tr>
+                    <tr class="highlight">
+                        <td>Vencimiento a dos meses (20%)</td>
+                        <td></td>
+                        <td></td>
+                        <td>28,000</td>
+                        <td>42,000</td>
+                        <td>56,000</td>
+                        <!--<td colspan="5"></td>-->
+                    </tr>
+                    <tr>
+                        <td>Otros Egresos</td>
+                        <td colspan="5"></td>
+                    </tr>
+                    <tr>
+                        <td>Egreso 1</td>
+                        <td></td>
+                        <td></td>
+                        <td>118,000</td>
+                        <td>228,000</td>
+                        <td>138,000</td>
+                        <!--<td colspan="5"></td>-->
+                    </tr>
+                    <tr>
+                        <td>Intereses</td>
+                        <td></td>
+                        <td ></td>
+                        <td >15,000</td>
+                        <td >15,000</td>
+                        <td >15,000</td>
+                    </tr>
+                    <tr class="highlight">
+                        <td>TOTAL EGRESOS</td>
+                        <td></td>
+                        <td></td>
+                        <td>336,000</td>
+                        <td>516,000</td>
+                        <td>556,000</td>
+                        <!--<td colspan="3"></td>-->
+                    </tr>
+                </tbody>
+            </table>
+          <!----  <button class="button" onclick="agregarColumna()">Agregar Columna</button>-->
+          <button class="btn-continuar"><a href="http://localhost:3030/neteo">Realizar NETEO</a></button>
+        </div>
+    
+        <script>
+            function agregarColumna() {
+                // Obtener la tabla
+                const table = document.getElementById('egresosTable');
+                const rows = table.rows;
+    
+                // Crear encabezado para la nueva columna
+                const nuevoMes = prompt("Ingrese el nombre del nuevo mes o columna:");
+                if (!nuevoMes) return;
+    
+                // Agregar encabezado
+                const th = document.createElement('th');
+                th.textContent = nuevoMes.toUpperCase();
+                rows[0].appendChild(th);
+    
+                // Agregar celdas vacías a cada fila
+                for (let i = 1; i < rows.length; i++) {
+                    const td = document.createElement('td');
+                    td.textContent = ''; // Puedes dejar esto vacío o con un valor predeterminado
+                    rows[i].appendChild(td);
+                }
+            }
+        </script>
+    </body>
+</html>

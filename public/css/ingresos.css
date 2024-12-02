@@ -1,0 +1,71 @@
+/* public/styles/style.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #f0f0f0;
+    text-align: center;
+  }
+  
+  table {
+    width: 90%;
+    margin: 0 auto;
+    border-collapse: collapse;
+  }
+  
+  th, td {
+    padding: 10px;
+    text-align: center;
+  }
+  
+  th {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  input[type="text"], input[type="number"] {
+    width: 90%;
+    padding: 5px;
+    text-align: center;
+  }
+  
+  .btn-continuar {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 20px;
+    cursor: pointer;
+  }
+  
+  button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+
+  .titulo {
+    background-color: #92d050; 
+    text-align: center; 
+   /* background-color: #90ee90;    /* Color verde claro */
+    color: white;                 /* Color del texto */
+    padding: 10px 30px;           /* Espaciado interno */
+    border-radius: 25px;          /* Bordes redondeados */
+    font-size: 18px;              /* Tamaño de fuente */
+    font-weight: bold; 
+    justify-content: center;
+    align-items: center;           /* Negrita */
+    text-align: center;           /* Centra el texto */
+    display: block;        /* Ajusta el tamaño al contenido */
+}
+
+.texto1Info{
+    padding: 0 50px 15px 50px;
+    text-align:justify;
+}
+
+.texto2Info{
+    padding: 0 50px 15px 50px;
+    text-align: justify;
+}
