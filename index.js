@@ -2,25 +2,33 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-import bodyParser from 'body-parser'; // Importación de body-parser
-import mysql from 'mysql2'; // Importación de mysql2
+import bodyParser from 'body-parser';                    // Importación de body-parser
+import mysql from 'mysql2';                              // Importación de mysql2
+import {dataFlowRouter} from "./routes/dataFlow.js"
+import { allViewsRouter } from './routes/dataFlow.js';
+
+
+// Middleware para parsear las solicitudes con cuerpo JSON
+
+
 
 const app = express();
+app.use(express.json());
 const port = 3030;
 
-// Configura el directorio actual (para resolver rutas)
-const __filename = fileURLToPath(import.meta.url);
+
+const __filename = fileURLToPath(import.meta.url);        // Configura el directorio actual (para resolver rutas)
 const __dirname = dirname(__filename);
+app.use(express.static(path.join(__dirname, 'public')));  // Serve static files from 'public' directory
+app.use(bodyParser.urlencoded({ extended: true }));       // Middleware for parsing form data
+app.set('view engine', 'ejs');                            // Configurar EJS como motor de plantillas
 
-// Serve static files from 'public' directory
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(dataFlowRouter);
+app.use(allViewsRouter);
 
-// Middleware for parsing form data
-app.use(bodyParser.urlencoded({ extended: true }));
-
-// Configurar EJS como motor de plantillas
-app.set('view engine', 'ejs');
-//app.use(express.static('public'));
+app.listen(port, () => {
+  console.log(`Servidor corriendo en http://localhost:${port}`);
+});
 
 
 /*
@@ -43,6 +51,7 @@ db.connect((err) => {
 //app.use(express.static(path.join(__dirname, 'public')));
 
 
+/*
 // Ruta para la vista de presupuesto de ingresos
 app.get('/ingresos', (req, res) => {
   res.render('ingresos');
@@ -76,7 +85,7 @@ app.get('/basesDatos', (req , res)=> {
 })
 
 
-
+*/
 
 /*
 // Ruta para procesar el formulario
@@ -135,6 +144,3 @@ app.post('/guardar', (req, res) => {
 });
 */
 // Inicia el servidor
-app.listen(port, () => {
-  console.log(`Servidor corriendo en http://localhost:${port}`);
-});

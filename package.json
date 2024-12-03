@@ -13,6 +13,7 @@
   "dependencies": {
     "ejs": "^3.1.10",
     "express": "^4.21.1",
+    "mssql": "^11.0.1",
     "mysql2": "^3.11.5",
     "proyecto-teoria-de-la-simulacion": "file:"
   },
