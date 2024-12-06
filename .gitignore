@@ -1,3 +1,37 @@
 node_modules
 .env
 .vscode
+
+# Archivos y carpetas específicas de Python
+__pycache__/          # Cache de Python
+*.pyc                 # Archivos compilados de Python
+*.pyo                 # Archivos optimizados de Python
+*.pyd                 # Archivos dinámicos en Windows
+*.pdb                 # Archivos de depuración de Python
+*.egg                 # Archivos empaquetados de Python
+*.egg-info/           # Información de los paquetes Python
+
+# Librerías virtuales
+venv/                 # Carpeta virtualenv
+.env                  # Archivos de configuración de entornos
+*.env                 # Archivos con variables de entorno
+
+# Modelos, pesos o configuraciones temporales
+*.h5                  # Pesos de modelos (por ejemplo, Keras)
+*.keras               # Archivos de configuración de Keras
+*.pkl                 # Objetos serializados con pickle
+*.joblib              # Objetos serializados con joblib
+
+# Archivos de logs o resultados temporales
+*.log                 # Archivos de log
+*.csv                 # Resultados temporales en CSV
+*.db                  # Archivos de bases de datos SQLite temporales
+
+# Configuración de IDEs
+.vscode/              # Configuración de Visual Studio Code
+.idea/                # Configuración de PyCharm
+*.sublime-project     # Archivos de Sublime Text
+
+# Otros
+.DS_Store             # Archivos generados por macOS
+Thumbs.db             # Archivos generados por Windows

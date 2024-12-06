@@ -100,7 +100,7 @@ export class allViews {
         res.render('basesDatos');
     }
     static redirecIngresos(req, res) {
-        res.render('egresos');
+        res.render('ingresos');
     }
 
     static redirecEgresis(req, res) {
