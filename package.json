@@ -11,8 +11,10 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "body-parser": "^1.20.3",
     "ejs": "^3.1.10",
-    "express": "^4.21.1",
+    "express": "^4.21.2",
+    "fs": "^0.0.1-security",
     "mssql": "^11.0.1",
     "mysql2": "^3.11.5",
     "proyecto-teoria-de-la-simulacion": "file:"

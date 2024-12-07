@@ -7,146 +7,257 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Presupuesto de Ingresos</title>
   <link rel="stylesheet" href="/css/ingresos.css">
+  <link rel="stylesheet" href="/css/menu.css">
+</head>
 </head>
 
-<body>
-  
-    <h1 class = "titulo">Presupuesto de Ingresos
+<div>
+  <div class="menu">
+    <ion-icon name="menu-outline"></ion-icon>
+    <ion-icon name="close-outline"></ion-icon>
+  </div>
+
+  <div class="barra-lateral">
+    <div>
+      <div class="nombre-pagina">
+        <ion-icon id="logo" name="logo-firefox"></ion-icon>
+        <span>APEX</span>
+      </div>
+      <button class="boton">
+        <ion-icon name="add-outline"></ion-icon>
+        <span>Create new</span>
+      </button>
+    </div>
+
+    <nav class="navegacion">
+      <ul>
+        <li>
+          <a id="inbox" href="http://localhost:3030/">
+            <ion-icon name="mail-unread-outline"></ion-icon>
+            <span>Inicio</span>
+          </a>
+        </li>
+        <li>
+          <a href="http://localhost:3030/formulario">
+            <ion-icon name="star-outline"></ion-icon>
+            <span>Proyeccion</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <ion-icon name="paper-plane-outline"></ion-icon>
+            <span>Sent</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <ion-icon name="document-text-outline"></ion-icon>
+            <span>Bases Datos</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <ion-icon name="bookmark-outline"></ion-icon>
+            <span>Historial</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <ion-icon name="alert-circle-outline"></ion-icon>
+            <span>Spam</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <ion-icon name="trash-outline"></ion-icon>
+            <span>Trash</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <div>
+      <div class="linea"></div>
+
+      <div class="modo-oscuro">
+        <div class="info">
+          <ion-icon name="moon-outline"></ion-icon>
+          <span>Drak Mode</span>
+        </div>
+        <div class="switch">
+          <div class="base">
+            <div class="circulo"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="usuario">
+        <img src="img/avatar-user-x640.jpg" alt="">
+        <div class="info-usuario">
+          <div class="nombre-email">
+            <span class="nombre">User</span>
+            <span class="email">user@mail.com</span>
+          </div>
+          <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="contenedor">
+    <h1 class="titulo">Presupuesto de Ingresos
     </h1>
- 
-  <p class="texto1Info">La tabla ya incluye las proyecciones de ventas con base en los datos históricos. Por favor, asegúrate de añadir cualquier otro ingreso que consideres constante y periódico, como dividendos, alquileres u otras fuentes regulares. Esto ayudará a tener una visión más completa del presupuesto.</p>
-  <p class=" texto2Info">La proyección máxima de ventas está limitada a un período de 3 meses a partir de la fecha indicada. Esto se debe a que este horizonte permite mantener un nivel de precisión más confiable en las predicciones, minimizando las variaciones e incertidumbres a largo plazo.</p>
- <!-- Sección para seleccionar mes -->
- <div>
-  <label for="monthSelect">Seleccionar mes:</label>
-  <select id="monthSelect" onchange="filterTable()">
-    <option value="enero">Enero</option>
-    <option value="febrero">Febrero</option>
-    <option value="marzo">Marzo</option>
-    <option value="abril">Abril</option>
-    <option value="mayo">Mayo</option>
-    <option value="junio">Junio</option>
-    <option value="julio">Julio</option>
-    <option value="agosto">Agosto</option>
-    <option value="septiembre">Septiembre</option>
-    <option value="octubre">Octubre</option>
-    <option value="noviembre">Noviembre</option>
-    <option value="diciembre">Diciembre</option>
-  </select>
-</div>
 
-<!-- Tabla de ingresos -->
-<table id="incomeTable" border="1" style="border-collapse: collapse;">
-  <thead>
-    <tr>
-      <th>MESES</th>
-      <th>ENERO</th>
-      <th>FEBRERO</th>
-      <th>MARZO</th>
-      <th>ABRIL</th>
-      <th>MAYO</th>
-      <th>JUNIO</th>
-      <th>JULIO</th>
-      <th>AGOSTO</th>
-      <th>SEPTIEMBRE</th>
-      <th>OCTUBRE</th>
-      <th>NOVIEMBRE</th>
-      <th>DICIEMBRE</th>
-      
-    </tr>
-  </thead>
-  <tbody>
-    <!-- Ventas Pronosticadas -->
-    <tr>
-      <td>Ventas Pronosticadas</td>
-      <td id="enero-ventas"></td>
-      <td id="febrero-ventas"></td>
-      <td id="marzo-ventas"></td>
-      <td id="abril-ventas"></td>
-      <td id="mayo-ventas"></td>
-      <td id="junio-ventas"></td>
-      <td id="julio-ventas"></td>
-      <td id="agosto-ventas"></td>
-      <td id="septiembre-ventas"></td>
-      <td id="octubre-ventas"></td>
-      <td id="noviembre-ventas"></td>
-      <td id="diciembre-ventas"></td>
-      
-    </tr>
-    <tr>
-      <td>Ventas en efectivo (20%)</td>
-      <td id="enero-efectivo"></td>
-      <td id="febrero-efectivo"></td>
-      <td id="marzo-efectivo"></td>
-      <td id="abril-efectivo"></td>
-      <td id="mayo-efectivo"></td>
-      <td id="junio-efectivo"></td>
-      <td id="julio-efectivo"></td>
-      <td id="agosto-efectivo"></td>
-      <td id="septiembre-efectivo"></td>
-      <td id="octubre-efectivo"></td>
-      <td id="noviembre-efectivo"></td>
-      <td id="diciembre-efectivo"></td>
-      
-    </tr>
-    <tr>
-      <td>Vencimiento a un mes (50%)</td>
-      <td id="enero-vencimiento1"></td>
-      <td id="febrero-vencimiento1"></td>
-      <td id="marzo-vencimiento1"></td>
-      <td id="abril-vencimiento1"></td>
-      <td id="mayo-vencimiento1"></td>
-      <td id="junio-vencimiento1"></td>
-      <td id="julio-vencimiento1"></td>
-      <td id="agosto-vencimiento1"></td>
-      <td id="septiembre-vencimiento1"></td>
-      <td id="octubre-vencimiento1"></td>
-      <td id="noviembre-vencimiento1"></td>
-      <td id="diciembre-vencimiento1"></td>
-      
-    </tr>
-    <tr >
-      <td>Vencimiento a dos meses (30%)</td>
-      <td id="enero-vencimiento2"></td>
-      <td id="febrero-vencimiento2"></td>
-      <td id="marzo-vencimiento2"></td>
-      <td id="abril-vencimiento2"></td>
-      <td id="mayo-vencimiento2"></td>
-      <td id="junio-vencimiento2"></td>
-      <td id="julio-vencimiento2"></td>
-      <td id="agosto-vencimiento2"></td>
-      <td id="septiembre-vencimiento2"></td>
-      <td id="octubre-vencimiento2"></td>
-      <td id="noviembre-vencimiento2"></td>
-      <td id="diciembre-vencimiento2"></td>
-      
-    </tr>
-    <tr id="otrosIngresosRow">
-      <td>OTROS INGRESOS</td>
-      <!--colspan="13"-->
-      <td ><button  id="boton" onclick="addIncomeRow()">+ Agregar Ingreso</button></td>
-    </tr>
-     <!-- Fila para Totales -->
-     <tr  id="indicador">
-      <td class="total">TOTAL INGRESOS</td>
-      <td class="total"></td>
-      <td class="total"></td>
-      <td class="total"></td>
-      <td class="total"></td>
-      <td class="total"></td>
-      <td class="total"></td>
-      <td class="total"></td>
-      <td class="total"></td>
-      <td class="total"></td>
-      <td class="total"></td>
-      <td class="total"></td>
-      <td class="total"></td>
-  </tr>
-  </tbody>
-</table>
+    <p class="texto1Info">La tabla ya incluye las proyecciones de ventas con base en los datos históricos. Por favor,
+      asegúrate de añadir cualquier otro ingreso que consideres constante y periódico, como dividendos, alquileres u
+      otras
+      fuentes regulares. Esto ayudará a tener una visión más completa del presupuesto.</p>
+    <p class=" texto2Info">La proyección máxima de ventas está limitada a un período de 3 meses a partir de la fecha
+      indicada. Esto se debe a que este horizonte permite mantener un nivel de precisión más confiable en las
+      predicciones, minimizando las variaciones e incertidumbres a largo plazo.</p>
+    <!-- Sección para seleccionar mes -->
+    <div>
+      <label for="monthSelect">Seleccionar mes:</label>
+      <select id="monthSelect" onchange="filterTable()">
+        <option value="enero">Enero</option>
+        <option value="febrero">Febrero</option>
+        <option value="marzo">Marzo</option>
+        <option value="abril">Abril</option>
+        <option value="mayo">Mayo</option>
+        <option value="junio">Junio</option>
+        <option value="julio">Julio</option>
+        <option value="agosto">Agosto</option>
+        <option value="septiembre">Septiembre</option>
+        <option value="octubre">Octubre</option>
+        <option value="noviembre">Noviembre</option>
+        <option value="diciembre">Diciembre</option>
+      </select>
+    </div>
 
-<button class="btn-continuar"><a href="http://localhost:3030/egresos">Continuar</a></button>
+    <!-- Tabla de ingresos -->
+    <table id="incomeTable" border="1" style="border-collapse: collapse;">
+      <thead>
+        <tr>
+          <th>MESES</th>
+          <th>ENERO</th>
+          <th>FEBRERO</th>
+          <th>MARZO</th>
+          <th>ABRIL</th>
+          <th>MAYO</th>
+          <th>JUNIO</th>
+          <th>JULIO</th>
+          <th>AGOSTO</th>
+          <th>SEPTIEMBRE</th>
+          <th>OCTUBRE</th>
+          <th>NOVIEMBRE</th>
+          <th>DICIEMBRE</th>
 
-<script src="../js/ingresos.js" >
-  
-</script>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Ventas Pronosticadas -->
+        <tr>
+          <td>Ventas Pronosticadas</td>
+          <td id="enero-ventas"></td>
+          <td id="febrero-ventas"></td>
+          <td id="marzo-ventas"></td>
+          <td id="abril-ventas"></td>
+          <td id="mayo-ventas"></td>
+          <td id="junio-ventas"></td>
+          <td id="julio-ventas"></td>
+          <td id="agosto-ventas"></td>
+          <td id="septiembre-ventas"></td>
+          <td id="octubre-ventas"></td>
+          <td id="noviembre-ventas"></td>
+          <td id="diciembre-ventas"></td>
+
+        </tr>
+        <tr>
+          <td>Ventas en efectivo (20%)</td>
+          <td id="enero-efectivo"></td>
+          <td id="febrero-efectivo"></td>
+          <td id="marzo-efectivo"></td>
+          <td id="abril-efectivo"></td>
+          <td id="mayo-efectivo"></td>
+          <td id="junio-efectivo"></td>
+          <td id="julio-efectivo"></td>
+          <td id="agosto-efectivo"></td>
+          <td id="septiembre-efectivo"></td>
+          <td id="octubre-efectivo"></td>
+          <td id="noviembre-efectivo"></td>
+          <td id="diciembre-efectivo"></td>
+
+        </tr>
+        <tr>
+          <td>Vencimiento a un mes (50%)</td>
+          <td id="enero-vencimiento1"></td>
+          <td id="febrero-vencimiento1"></td>
+          <td id="marzo-vencimiento1"></td>
+          <td id="abril-vencimiento1"></td>
+          <td id="mayo-vencimiento1"></td>
+          <td id="junio-vencimiento1"></td>
+          <td id="julio-vencimiento1"></td>
+          <td id="agosto-vencimiento1"></td>
+          <td id="septiembre-vencimiento1"></td>
+          <td id="octubre-vencimiento1"></td>
+          <td id="noviembre-vencimiento1"></td>
+          <td id="diciembre-vencimiento1"></td>
+
+        </tr>
+        <tr>
+          <td>Vencimiento a dos meses (30%)</td>
+          <td id="enero-vencimiento2"></td>
+          <td id="febrero-vencimiento2"></td>
+          <td id="marzo-vencimiento2"></td>
+          <td id="abril-vencimiento2"></td>
+          <td id="mayo-vencimiento2"></td>
+          <td id="junio-vencimiento2"></td>
+          <td id="julio-vencimiento2"></td>
+          <td id="agosto-vencimiento2"></td>
+          <td id="septiembre-vencimiento2"></td>
+          <td id="octubre-vencimiento2"></td>
+          <td id="noviembre-vencimiento2"></td>
+          <td id="diciembre-vencimiento2"></td>
+
+        </tr>
+        <tr id="otrosIngresosRow">
+          <td>OTROS INGRESOS</td>
+          <!--colspan="13"-->
+          <td><button id="boton" onclick="addIncomeRow()">+ Agregar Ingreso</button></td>
+        </tr>
+        <!-- Fila para Totales -->
+        <tr id="indicador">
+          <td class="total">TOTAL INGRESOS</td>
+          <td class="total"></td>
+          <td class="total"></td>
+          <td class="total"></td>
+          <td class="total"></td>
+          <td class="total"></td>
+          <td class="total"></td>
+          <td class="total"></td>
+          <td class="total"></td>
+          <td class="total"></td>
+          <td class="total"></td>
+          <td class="total"></td>
+          <td class="total"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <button class="btn-continuar"><a href="http://localhost:3030/egresos">Continuar</a></button>
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+  <script src="/js/menu.js"></script>
+  <script src="../js/ingresos.js"></script>
+    <script>
+      fetch('http://localhost:3030/predicciones')
+          .then(response => response.json())
+          .then(data => {
+        localStorage.setItem('prediccionesVentas', JSON.stringify(data));
+      console.log('Datos guardados en localStorage:', data);
+          })
+          .catch(error => console.error('Error al obtener predicciones:', error));
+  </script>
+
+
+  </script>

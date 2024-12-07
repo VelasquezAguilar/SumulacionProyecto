@@ -10,6 +10,7 @@ import { allViewsRouter } from './routes/dataFlow.js';
 
 // Middleware para parsear las solicitudes con cuerpo JSON
 
+// Middleware para poder leer JSON
 
 
 const app = express();
@@ -20,7 +21,8 @@ const port = 3030;
 const __filename = fileURLToPath(import.meta.url);        // Configura el directorio actual (para resolver rutas)
 const __dirname = dirname(__filename);
 app.use(express.static(path.join(__dirname, 'public')));  // Serve static files from 'public' directory
-app.use(bodyParser.urlencoded({ extended: true }));       // Middleware for parsing form data
+app.use(bodyParser.urlencoded({ extended: true })); 
+app.use(bodyParser.json());      // Middleware for parsing form data
 app.set('view engine', 'ejs');                            // Configurar EJS como motor de plantillas
 
 app.use(dataFlowRouter);

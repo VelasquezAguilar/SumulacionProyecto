@@ -5,6 +5,10 @@ body {
     background-color: #f0f0f0;
     text-align: center;
   }
+
+  .contenedor{
+    padding-left: 220px;
+  }
   
   table {
     width: 90%;

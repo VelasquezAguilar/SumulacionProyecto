@@ -1,0 +1,30 @@
+[
+  {
+    "mes": 2,
+    "producto": "2",
+    "precio": "",
+    "tipoVenta": "0",
+    "publicidad": "0",
+    "garantia": "0",
+    "descuento": "0",
+    "edadMedia": 50.5,
+    "generoSegmento": "0",
+    "pais": "7",
+    "puntosVenta": "0",
+    "canales": "1"
+  },
+  {
+    "mes": 6,
+    "producto": "1",
+    "precio": null,
+    "tipoVenta": "0",
+    "publicidad": "1",
+    "garantia": "0",
+    "descuento": "0",
+    "edadMedia": 21.5,
+    "generoSegmento": "1",
+    "pais": "7",
+    "puntosVenta": "1",
+    "canales": "1"
+  }
+]

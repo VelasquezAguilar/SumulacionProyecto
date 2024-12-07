@@ -1,7 +1,12 @@
+//import { localsName } from "ejs";
 
 // Obtener referencias al modal
 const formModal = document.getElementById("form-modal");
 
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////FUNCION PARA ESTABLECER CONEXION CON LA BASE DE DATOS///////////////////
 /**
  * Extraer datos del formulario
  * @returns {Object}
@@ -34,23 +39,33 @@ async function dbConnection() {
       body: JSON.stringify(formData),  // Enviar solo los campos necesarios
     });
     const result = await response.json();
-      console.log("este es el resultado brother:", result)
+    console.log("este es el resultado brother:", result)
     if (result.message === 'Conexión establecida con éxito') {
       alert("Conexión exitosa");
-      // Aquí  se puedes hacer cualquier acción después de la conexión exitosa
-      // Por ejemplo, obtener las tablas
+      
+
+        // Guardar los datos en localStorage
+        localStorage.setItem("dbConnectionInfo", JSON.stringify(formData));
+        console.log("Datos guardados en localStorage");
+         // Guardar datos en localStorage
+      
+
       await populateTableNames();  // Llama esta función después de la conexión
+       
     } else {
       alert("Exito en la conexión: " + result.message);
     }
   } catch (error) {
     console.error("Error:", error);
-    alert("Error al conectar con la base de datos.");
+    alert("Error al conectar con la base de datos 333.");
   }
 }
 
 
 
+
+/////////////////////////////////////////////////////////////////////////////////////////
+///////////////////FUNCION PARA OBTENER LAS TABLAS DE LA CONEXION///////////////////////
 
 /**
  * Extraer nombres de las tablas y llenar el select
@@ -72,12 +87,12 @@ async function populateTableNames() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
-      
+
     });
-    console.log("Verificando conexión...",JSON.stringify(formData) )
+    console.log("Verificando conexión...", JSON.stringify(formData))
     var tonces = response;
     console.log("que es lo que imprime:", tonces)
-    
+
     if (!response.ok) {
       const errorResponse = await response.json();
       console.error("Error al obtener tablas:", errorResponse.message);
@@ -89,15 +104,24 @@ async function populateTableNames() {
     console.log('Resultado del servidor:', result); // Verifica la respuesta del servidor
 
     // Limpiar opciones previas
-   const tableSelect = formModal.querySelector("#TableName");
-   tableSelect.innerHTML = '<option value="">Selecciona una tabla</option>';
- 
+    const tableSelect = formModal.querySelector("#TableName");
+    tableSelect.innerHTML = '<option value="">Selecciona una tabla</option>';
+
     // Llenar select con las tablas obtenidas
     result.recordset.forEach((table) => {
       let option = document.createElement("option");
       option.value = table.table_name;
       option.innerText = table.table_name;
       tableSelect.appendChild(option);
+    });
+
+    // Agregar evento para capturar y guardar la tabla seleccionada
+    tableSelect.addEventListener("change", (event) => {
+      const selectedTable = event.target.value; // Obtener la tabla seleccionada
+      if (selectedTable) {
+        console.log("Tabla seleccionada:", selectedTable);
+        localStorage.setItem("selectedTable", selectedTable); // Guardar en localStorage
+      }
     });
   } catch (error) {
     console.error("Error:", error);
@@ -106,6 +130,10 @@ async function populateTableNames() {
 }
 
 
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
+//////////////FUNCION PARA RENDERIZAR LA MODAL DE AGREGAR CONEXION///////////////////////
 /**
 *
 * @param {string} typeOfBlockDraggedId
@@ -156,7 +184,7 @@ function setModalHtmlContent(typeOfBlockDraggedId) {
     </div>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" onclick="toggleModal()">Cancelar</button>
+    <button type="button" class="btn btn-secondary" onclick="cancelConfig()">Cancelar</button>
     <button type="button" class="btn btn-primary" onclick="saveDestinationConfig()">Guardar</button>
   </div>
 </div>
@@ -171,4 +199,64 @@ function setModalHtmlContent(typeOfBlockDraggedId) {
       .addEventListener("change", checkSelectValue);
 
   }
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
+///////////////////FUNCION PARA RENDERIZAR LAS OCNEXIONES EXITOSAS///////////////////////
+function renderConnectionsFromLocalStorage() {
+  // Obtener datos únicos de dbConnectionInfo
+  const connectionData = JSON.parse(localStorage.getItem("dbConnectionInfo"));
+
+  // Obtener datos múltiples de conexiones
+  const multipleConnections = JSON.parse(localStorage.getItem("conexiones")) || [];
+
+  // Obtener la referencia al cuerpo de la tabla
+  const tableBody = document.getElementById("connectionTableBody");
+
+  // Limpiar contenido previo
+  tableBody.innerHTML = "";
+
+  // Renderizar la conexión única (si existe)
+  if (connectionData) {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>1</td>
+      <td>Conexión LocalStorage</td>
+      <td>${connectionData.server}</td>
+      <td>${connectionData.dataBase}</td>
+      <td>${connectionData.user}</td>
+    `;
+    tableBody.appendChild(row);
+  }
+
+  // Renderizar conexiones múltiples
+  multipleConnections.forEach((connection, index) => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${connectionData ? index + 2 : index + 1}</td>
+      <td contenteditable="true" class="editable">${connection.nombre || "Nueva Conexión"}</td>
+      <td>${connection.server}</td>
+      <td>${connection.dataBase}</td>
+      <td>${connection.user}</td>
+    `;
+    tableBody.appendChild(row);
+  });
+}
+
+// Llamar la función para renderizar las conexiones al cargar la página
+window.onload = renderConnectionsFromLocalStorage;
+
+
+
+
+
+// Esta es la función para cerrar el modal al hacer clic en "Cancelar"
+function cancelConfig() {
+  // Cierra el modal (esto depende de tu implementación específica de modal)
+  // Si usas Bootstrap, puedes hacer algo como:
+  $('#modalContentDiv').modal('hide'); // Oculta el modal con jQuery (ajusta según tu caso)
+  
+  // No hace nada más (no guarda nada en el localStorage)
+  console.log('Acción cancelada');
 }

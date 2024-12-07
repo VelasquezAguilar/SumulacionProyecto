@@ -9,12 +9,13 @@ export const allViewsRouter  = Router();
 //dataFlowRouter.get('/dataFlow', DataFlow.redirectToBoard);
 dataFlowRouter.post('/connect', DataFlow.connection);
 dataFlowRouter.post('/tableNames', DataFlow.getTableNames);
-
-
-allViewsRouter.get('/', allViews. redirectInicio);
+dataFlowRouter.post('/connectTable', DataFlow.connectionTable);
+allViewsRouter.get('/', allViews.redirectMenu);
+//allViewsRouter.get('/', allViews. redirectInicio);
 allViewsRouter.get('/formulario', allViews.redirecProyeccion);
 allViewsRouter.get('/basesDatos', allViews.redirecBD);
 allViewsRouter.get('/ingresos', allViews.redirecIngresos);
 allViewsRouter.get('/egresos', allViews.redirecEgresis);
-allViewsRouter.get('neteo', allViews.redirecNeteo);
+allViewsRouter.get('/neteo', allViews.redirecNeteo);
+dataFlowRouter.post('/procesar-datos', DataFlow.procesarDatos);
 
