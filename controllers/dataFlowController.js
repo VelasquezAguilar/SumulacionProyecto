@@ -125,8 +125,7 @@ export class DataFlow {
 
 
     //Metodo para procesar los datos del  fromualrio ose obtenerlos ya procesados 
-    // Controlador para procesar los datos
-   /* static procesarDatos = (req, res) => {
+    static procesarDatos = (req, res) => {
         const datos = req.body;
     
         // Validar que se recibieron los datos
@@ -136,49 +135,25 @@ export class DataFlow {
     
         console.log("Datos recibidos del frontend:", datos);
     
-        // Obtener la ruta del directorio actual (sin usar `import.meta.url`)
+        // Obtener la ruta del directorio actual
         const __dirname = path.resolve();
     
-        // Obtener la ruta absoluta del archivo JSON usando path.join
+        // Obtener la ruta absoluta del archivo JSON
         const filePath = path.join(__dirname, 'json', 'datosFormulario.json');
     
-        // Leer el archivo JSON existente
-        fs.readFile(filePath, (err, data) => {
-            let datosGuardados = [];
-    
+        // Sobrescribir el archivo con los nuevos datos
+        fs.writeFile(filePath, JSON.stringify(datos, null, 2), (err) => {
             if (err) {
-                if (err.code === 'ENOENT') {
-                    // Si el archivo no existe, lo creamos
-                    console.log("Archivo JSON no encontrado, crearemos uno nuevo.");
-                } else {
-                    console.error("Error al leer el archivo:", err);
-                    return res.status(500).json({ error: 'Error al leer el archivo JSON' });
-                }
-            } else {
-                try {
-                    datosGuardados = JSON.parse(data); // Parsear los datos existentes
-                } catch (parseError) {
-                    console.error("Error al parsear el archivo JSON:", parseError);
-                    return res.status(500).json({ error: 'Error al parsear el archivo JSON' });
-                }
+                console.error("Error al guardar los datos:", err);
+                return res.status(500).json({ error: 'Error al guardar los datos en el archivo JSON' });
             }
     
-            // Agregar los nuevos datos al array
-            datosGuardados.push(datos);
-    
-            // Escribir los datos actualizados en el archivo JSON
-            fs.writeFile(filePath, JSON.stringify(datosGuardados, null, 2), (err) => {
-                if (err) {
-                    console.error("Error al guardar los datos:", err);
-                    return res.status(500).json({ error: 'Error al guardar los datos en el archivo JSON' });
-                }
-    
-                // Responder con éxito
-                res.status(200).json({ mensaje: "Datos guardados correctamente" });
-            });
+            // Responder con éxito
+            res.status(200).json({ mensaje: "Datos sobrescritos correctamente en el archivo JSON" });
         });
-    };*/
-
+    };
+    
+/*
     static procesarDatos = (req, res) => {
         const datos = req.body;
     
@@ -231,43 +206,8 @@ export class DataFlow {
             });
         });
     };
+    */
     
-    /*
-    
-            // Ejecutar el script Python
-            const pythonProcess = spawn("python3", ["procesar_datos.py"]);
-    
-            // Enviar datos al script Python
-            pythonProcess.stdin.write(JSON.stringify(datos));
-            pythonProcess.stdin.end();
-    
-            let resultado = "";
-    
-            // Leer la respuesta de Python
-            pythonProcess.stdout.on("data", (data) => {
-                resultado += data.toString();
-            });
-    
-            pythonProcess.stderr.on("data", (error) => {
-                console.error("Error en Python:", error.toString());
-            });
-    
-            // Cuando termine, devolver la respuesta
-            pythonProcess.on("close", (code) => {
-                if (code !== 0) {
-                    return res.status(500).json({ error: "Error ejecutando Python" });
-                }
-    
-                try {
-                    const resultadoJSON = JSON.parse(resultado);
-                    res.status(200).json({
-                        mensaje: "Datos procesados correctamente",
-                        resultado: resultadoJSON
-                    });
-                } catch (error) {
-                    res.status(500).json({ error: "Error procesando respuesta de Python" });
-                }
-            });*/
 
 
 };
