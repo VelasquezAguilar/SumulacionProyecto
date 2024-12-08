@@ -1,421 +1,7 @@
-// Función para mostrar solo los meses a partir del mes seleccionado
-/*function filterTable() {
-
-    const selectedMonth = document.getElementById('monthSelect').value;
-    const months = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
-  
-    // Encuentra el índice del mes seleccionado
-    const startIndex = months.indexOf(selectedMonth);
-  
-    // Obtiene todas las filas de la tabla
-    const table = document.getElementById('incomeTable');
-    const rows = table.rows;
-  
-    // Recorre todas las filas de la tabla
-    for (let i = 0; i < rows.length; i++) {
-      const cells = rows[i].cells;
-  
-      // Ocultar las columnas de los meses no deseados (fuera de los 2 previos y 2 posteriores)
-      for (let j = 1; j < cells.length; j++) {
-        if (j - 1 < startIndex - 2 || j - 1 > startIndex + 2) {
-          cells[j].style.display = 'none'; // Oculta la columna
-          toggleOtrosIngresos();
-        } else {
-          cells[j].style.display = ''; // Muestra la columna
-        }
-      }
-      
-    }
-  
-     // Función para mostrar/ocultar la fila de Otros Ingresos
-     function toggleOtrosIngresos() {
-        const row = document.getElementById('otrosIngresosRow');
-        if (row.style.display === 'none') {
-            row.style.display = '';
-        } else {
-            row.style.display = 'none';
-        }
-        filterTable(); // Actualiza la tabla cuando se cambia la visibilidad
-    }
-
-    // Llamar a filterTable para aplicar los filtros iniciales
-    filterTable();
-    // Mostrar también los totales solo para los tres meses seleccionados y los dos siguientes
-    const totalVentas = ventasPronosticadas.slice(startIndex - 2, startIndex + 3).reduce((a, b) => a + b, 0);
-    const totalEfectivo = ventasEfectivo.slice(startIndex - 2, startIndex + 3).reduce((a, b) => a + b, 0);
-    const totalVencimiento1 = vencimientoMes1.slice(startIndex - 2, startIndex + 3).reduce((a, b) => a + b, 0);
-    const totalVencimiento2 = vencimientoMes2.slice(startIndex - 2, startIndex + 3).reduce((a, b) => a + b, 0);
-  
-    // Mostrar los totales
-    document.getElementById('total-ventas').innerText = totalVentas;
-    document.getElementById('total-efectivo').innerText = totalEfectivo;
-    document.getElementById('total-vencimiento1').innerText = totalVencimiento1;
-    document.getElementById('total-vencimiento2').innerText = totalVencimiento2;
-  }
-  */
- // Variables de ventas pronosticadas
-/*const ventasPronosticadas = {
-    "Enero": 200000,
-    "Febrero": 250000,
-    "Marzo": 300000,
-    "Abril": 350000,
-    "Mayo": 400000,
-    "Junio": 450000,
-    "Julio": 500000,
-    "Agosto": 550000,
-    "Septiembre": 600000,
-    "Octubre": 650000,
-    "Noviembre": 700000,
-    "Diciembre": 750000
-  };
-  
-  // Función para filtrar los meses de la tabla según el mes seleccionado
-  function filterTable() {
-    const selectedMonth = document.getElementById('monthSelect').value;
-    const months = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
-    const startIndex = months.indexOf(selectedMonth);
-  
-    const table = document.getElementById('incomeTable');
-    const rows = table.rows;
-  
-    // Ajusta la visualización de las celdas según el mes seleccionado
-    for (let i = 0; i < rows.length; i++) {
-      const cells = rows[i].cells;
-  
-      // Muestra las celdas correspondientes a los meses seleccionados y oculta las anteriores
-      for (let j = 1; j < cells.length - 1; j++) {
-        if (j < startIndex + 1) {
-          cells[j].style.display = 'none';
-        } else {
-          cells[j].style.display = '';
-        }
-      }
-    }
-  
-    // Rellenar los datos de ventas pronosticadas en las celdas
-    for (let i = 1; i <= 12; i++) {
-      let month = months[i - 1];
-      if (months.indexOf(selectedMonth) <= i) {
-        table.rows[0].cells[i].innerHTML = ventasPronosticadas[month] || "";
-      } else {
-        table.rows[0].cells[i].innerHTML = "";
-      }
-    }
-  
-    // Lógica para las filas de vencimiento y sumas
-    updateVencimientoRows(selectedMonth);
-  }
-  
-  // Función para actualizar las celdas de vencimiento
-  function updateVencimientoRows(selectedMonth) {
-    const months = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
-    const startIndex = months.indexOf(selectedMonth);
-  
-    // Actualizar las filas de vencimiento
-    const vencimientoUnMesRow = document.getElementsByTagName("tr")[2];
-    const vencimientoDosMesesRow = document.getElementsByTagName("tr")[3];
-  
-    for (let i = 1; i <= 12; i++) {
-      if (i <= startIndex - 1) {
-        vencimientoUnMesRow.cells[i].innerHTML = "";
-        vencimientoDosMesesRow.cells[i].innerHTML = "";
-      } else {
-        if (i === startIndex) {
-          vencimientoUnMesRow.cells[i].innerHTML = ""; // Vacío para la celda anterior al mes seleccionado
-        }
-        else if (i === startIndex + 1) {
-          vencimientoDosMesesRow.cells[i].innerHTML = ""; // Vacío para la celda a dos meses antes
-        } else {
-          vencimientoUnMesRow.cells[i].innerHTML = ""; // Se mantiene vacío
-        }
-      }
-    }
-  }
-  
-  // Función para agregar una fila de ingreso (otros ingresos)
-  function toggleOtrosIngresos() {
-    const otrosIngresosRow = document.getElementById('otrosIngresosRow');
-    const tableBody = document.getElementById('incomeTable').getElementsByTagName('tbody')[0];
-  
-    // Verificar si ya existe una fila de ingreso, para no agregarla más de una vez
-    if (!document.getElementById('otrosIngresosInputs')) {
-      const newRow = tableBody.insertRow(tableBody.rows.length - 1);
-      newRow.id = 'otrosIngresosInputs';
-  
-      // Crear las celdas para el ingreso
-      const cell1 = newRow.insertCell(0);
-      const cell2 = newRow.insertCell(1);
-      const cell3 = newRow.insertCell(2);
-      const cell4 = newRow.insertCell(3);
-      const cell5 = newRow.insertCell(4);
-      const cell6 = newRow.insertCell(5);
-      const cell7 = newRow.insertCell(6);
-      const cell8 = newRow.insertCell(7);
-      const cell9 = newRow.insertCell(8);
-      const cell10 = newRow.insertCell(9);
-      const cell11 = newRow.insertCell(10);
-      const cell12 = newRow.insertCell(11);
-      const cell13 = newRow.insertCell(12);
-  
-      cell1.innerHTML = `<input type="text" placeholder="Descripción del ingreso">`;
-      cell2.innerHTML = `<input type="number" placeholder="0" oninput="updateTotal()"/>`;
-      cell3.innerHTML = `<input type="number" placeholder="0" oninput="updateTotal()"/>`;
-      cell4.innerHTML = `<input type="number" placeholder="0" oninput="updateTotal()"/>`;
-      cell5.innerHTML = `<input type="number" placeholder="0" oninput="updateTotal()"/>`;
-      cell6.innerHTML = `<input type="number" placeholder="0" oninput="updateTotal()"/>`;
-      cell7.innerHTML = `<input type="number" placeholder="0" oninput="updateTotal()"/>`;
-      cell8.innerHTML = `<input type="number" placeholder="0" oninput="updateTotal()"/>`;
-      cell9.innerHTML = `<input type="number" placeholder="0" oninput="updateTotal()"/>`;
-      cell10.innerHTML = `<input type="number" placeholder="0" oninput="updateTotal()"/>`;
-      cell11.innerHTML = `<input type="number" placeholder="0" oninput="updateTotal()"/>`;
-      cell12.innerHTML = `<input type="number" placeholder="0" oninput="updateTotal()"/>`;
-      cell13.innerHTML = `<input type="number" placeholder="0" oninput="updateTotal()"/>`;
-    } else {
-      otrosIngresosRow.style.display = 'none'; // Ocultar el botón cuando se muestra la fila
-    }
-  }
-  
-  // Función para actualizar los totales
-  function updateTotal() {
-    const rows = document.getElementById('incomeTable').rows;
-    let totalIngresos = 0;
-  
-    // Sumar todos los valores de los ingresos (en las celdas)
-    for (let i = 1; i < rows.length - 1; i++) {
-      const row = rows[i];
-      for (let j = 1; j <= 12; j++) {
-        const cell = row.cells[j];
-        const value = parseFloat(cell.querySelector('input') ? cell.querySelector('input').value : 0);
-        totalIngresos += value;
-      }
-    }
-  
-    // Actualizar la celda total
-    document.getElementById('total-ventas').innerHTML = totalIngresos;
-    // Puedes agregar más lógica para actualizar los totales específicos como "efectivo" y "vencimientos" si lo deseas.
-  }*/
- // Función para filtrar la tabla según el mes seleccionado// Función para mostrar solo los meses a partir del mes seleccionado
-/*function filterTable() {
-    const selectedMonth = document.getElementById('monthSelect').value;
-    const months = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
-  
-    // Encuentra el índice del mes seleccionado
-    const startIndex = months.indexOf(selectedMonth);
-  
-    // Obtiene todas las filas de la tabla
-    const table = document.getElementById('incomeTable');
-    const rows = table.rows;
-  
-    // Recorre todas las filas de la tabla
-    for (let i = 0; i < rows.length; i++) {
-      const cells = rows[i].cells;
-  
-      // Ocultar los meses antes del mes seleccionado
-      for (let j = 1; j < cells.length; j++) {
-        if (j <= startIndex) {
-          cells[j].style.display = 'none'; // Oculta la columna
-        } else {
-          cells[j].style.display = ''; // Muestra la columna
-        }
-      }
-    }
-  
-    // Mostrar también los dos meses anteriores y dos meses posteriores al mes seleccionado
-    const monthsToShow = [];
-    const monthsCount = months.length;
-  
-    for (let i = -2; i <= 2; i++) {
-      const monthIndex = (startIndex + i + monthsCount) % monthsCount;
-      monthsToShow.push(monthIndex);
-    }
-  
-    // Recorre todas las filas y muestra solo los meses seleccionados
-    for (let i = 0; i < rows.length; i++) {
-      const cells = rows[i].cells;
-  
-      for (let j = 1; j < cells.length; j++) {
-        if (monthsToShow.includes(j - 1)) {
-          cells[j].style.display = ''; // Muestra la columna
-        } else {
-          cells[j].style.display = 'none'; // Oculta la columna
-        }
-      }
-    }
-
-    
-      
-  }
-
-  function addIncomeRow() {
-    // Obtener la tabla
-    const table = document.getElementById('incomeTable');
-    
-    // Crear una nueva fila
-    const newRow = document.createElement('tr');
-  
-    // Crear la primera celda (OTROS INGRESOS)
-    const cellLabel = document.createElement('td');
-    cellLabel.textContent = 'Ingreso Adicional';  // Puedes personalizar este texto
-    newRow.appendChild(cellLabel);
-  
-    // Crear inputs para las columnas de los meses (saltando las dos primeras celdas)
-    for (let i = 1; i < 13; i++) { // 12 meses, saltamos la columna de texto
-      const cell = document.createElement('td');
-      const input = document.createElement('input');
-      input.type = 'number';
-      input.min = '0';
-      input.placeholder = '0';
-      input.style.width = '80px'; // Ajustar ancho si es necesario
-      input.required = true;
-  
-      cell.appendChild(input);
-      newRow.appendChild(cell);
-    }
-  
-    // Insertar la nueva fila antes del botón de "+ Agregar Ingreso"
-    const otrosIngresosRow = document.getElementById('indicador');
-    table.tBodies[0].insertBefore(newRow, otrosIngresosRow);
-  }
-  addIncomeRow();
-  /*const months = [
-    'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
-    'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
-  ];
-  
-  function filterTable() {
-    const selectedMonth = document.getElementById('monthSelect').value;
-    const startIndex = months.indexOf(selectedMonth);
-  
-    // Control del botón "Agregar Ingreso"
-    const addButtonRow = document.getElementById('otrosIngresosRow');
-    addButtonRow.style.display = selectedMonth ? '' : 'none';
-  
-    const table = document.getElementById('incomeTable');
-    const rows = table.rows;
-  
-    // Calcular índices de los meses a mostrar (seleccionado ± 2)
-    const monthsToShow = [];
-    for (let i = -2; i <= 2; i++) {
-      const index = (startIndex + i + 12) % 12;  // Asegura índices circulares
-      monthsToShow.push(index);
-    }
-  
-    localStorage.setItem('monthsToShowLength', monthsToShow.length);  // Guardar longitud
-  
-    // Ocultar/mostrar columnas según la selección
-    for (let i = 0; i < rows.length; i++) {
-      const cells = rows[i].cells;
-      for (let j = 1; j < cells.length; j++) {
-        if (monthsToShow.includes(j - 1)) {
-          cells[j].style.display = '';
-        } else {
-          cells[j].style.display = 'none';
-        }
-      }
-    }
-  }
-  
-  function addIncomeRow() {
-    const table = document.getElementById('incomeTable');
-    const newRow = document.createElement('tr');
-  
-    const cellLabel = document.createElement('td');
-    const descriptionInput = document.createElement('input');
-    descriptionInput.type = 'text';
-    descriptionInput.placeholder = 'Descripción del ingreso';
-    descriptionInput.required = true;
-    cellLabel.appendChild(descriptionInput);
-    newRow.appendChild(cellLabel);
-  
-    const visibleColumns = parseInt(localStorage.getItem('monthsToShowLength'), 10) || 5;
-  
-    for (let i = 0; i < visibleColumns; i++) {
-      const cell = document.createElement('td');
-      const input = document.createElement('input');
-      input.type = 'number';
-      input.min = '0';
-      input.placeholder = '0';
-      cell.appendChild(input);
-      newRow.appendChild(cell);
-    }
-  
-    const indicadorRow = document.getElementById('indicador');
-    table.tBodies[0].insertBefore(newRow, indicadorRow);
-  }
-  
-  // Ajuste dinámico del botón
-  const table = document.querySelector('table');
-  const addButton = document.getElementById('otrosIngresosRows');
-  addButton.addEventListener('click', function() {
-    const totalColumns = table.rows[0].cells.length;
-    const buttonCell = addButton.closest('td');
-    buttonCell.setAttribute('colspan', totalColumns);
-  });*/
-  
-/*
-function filterTable() {
-  const selectedMonth = document.getElementById('monthSelect').value.trim().toLowerCase();
-  const indicadorRow = document.getElementById('otrosIngresosRow');
-
-  // Ocultar el botón si no se selecciona un mes válido
-  if (selectedMonth === "" || !months.includes(selectedMonth)) {
-    indicadorRow.style.display = 'none'; // Ocultar el botón si no se ha seleccionado mes
-    return; // Detener la ejecución si no se seleccionó mes
-  }
-
-  // Mostrar el botón si se seleccionó un mes válido
-  indicadorRow.style.display = '';
-
-  const startIndex = months.indexOf(selectedMonth);
-
-  // Obtener las filas de la tabla
-  const table = document.getElementById('incomeTable');
-  const rows = table.rows;
-
-  // Mostrar solo los dos meses antes y dos meses después del seleccionado, con excepciones para enero y febrero
-  const monthsToShow = [];
-  const monthsCount = months.length;
-
-  // Lógica especial para enero y febrero (mostrar noviembre, diciembre, enero, febrero, marzo)
-  if (startIndex === 0) { // Si se seleccionó enero
-    monthsToShow.push(monthsCount - 2); // Diciembre
-    monthsToShow.push(monthsCount - 1); // Noviembre
-    monthsToShow.push(startIndex); // Enero
-    monthsToShow.push(1); // Febrero
-    monthsToShow.push(2); // Marzo
-  } else if (startIndex === 1) { // Si se seleccionó febrero
-    monthsToShow.push(monthsCount - 1); // Diciembre
-    monthsToShow.push(startIndex - 1); // Enero
-    monthsToShow.push(startIndex); // Febrero
-    monthsToShow.push(2); // Marzo
-    monthsToShow.push(3); // Abril
-  } else { // Para los demás meses (marzo en adelante)
-    for (let i = -2; i <= 2; i++) {
-      const monthIndex = (startIndex + i + monthsCount) % monthsCount;
-      monthsToShow.push(monthIndex);
-    }
-  }
-
-  // Guardar el tamaño del arreglo monthsToShow en localStorage
-  localStorage.setItem('monthsToShowLength', monthsToShow.length);
-
-  // Recorre todas las filas y muestra solo los meses seleccionados
-  for (let i = 0; i < rows.length; i++) {
-    const cells = rows[i].cells;
-    for (let j = 1; j < cells.length; j++) {
-      if (monthsToShow.includes(j - 1)) {
-        cells[j].style.display = ''; // Muestra la columna
-      } else {
-        cells[j].style.display = 'none'; // Oculta la columna
-      }
-    }
-  }
-}
-
 function addIncomeRow() {
-  // Obtener la tabla
-  const table = document.getElementById('incomeTable');
-  
+  // Obtener la tabla usando la clase en lugar de un ID
+  const table = document.querySelector('.income-table');
+
   // Crear una nueva fila
   const newRow = document.createElement('tr');
 
@@ -430,276 +16,450 @@ function addIncomeRow() {
   cellLabel.appendChild(descriptionInput);
   newRow.appendChild(cellLabel);
 
-  const storedLength = parseInt(localStorage.getItem('monthsToShowLength'), 10) || 0;
+  // Obtener la longitud dinámica según el número de columnas actuales
+  const headerCells = table.querySelectorAll('thead tr th');
+  const storedLength = headerCells.length - 1; // Restar 1 porque la primera columna es "MESES"
 
-  // Crear inputs para las columnas de los meses (12 meses)
-  for (let i = 0; i < storedLength; i++) { // 12 meses, comenzando de la columna 1 (Enero)
+  // Crear inputs para las columnas de los meses
+  for (let i = 0; i < storedLength; i++) {
     const cell = document.createElement('td');
     const input = document.createElement('input');
-    input.type = 'number';
+    input.type = 'float';
     input.min = '0';
     input.placeholder = '0';
-    input.style.width = '80px'; // Ajustar ancho si es necesario
-    input.required = true;
+    //input.value = '0.0'; // Valor por defecto
+    input.style.width = '100px'; // Ajustar ancho si es necesario
+    input.required = false;
 
     cell.appendChild(input);
     newRow.appendChild(cell);
   }
 
-  // Insertar la nueva fila antes del botón de "+ Agregar Ingreso"
-  const indicadorRow = document.getElementById('indicador');
-  table.tBodies[0].insertBefore(newRow, indicadorRow);
-}*/
-/////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////
+  // Insertar la nueva fila antes de la fila "OTROS INGRESOS"
+  const lastRow = table.querySelector('tbody tr:last-child');
+  table.tBodies[0].insertBefore(newRow, lastRow);
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
 /*
-const months = [
-  'enero',
-  'febrero', 
-  'marzo', 
-  'abril', 
-  'mayo', 
-  'junio', 
-  'julio', 
-  'agosto', 
-  'septiembre', 
-  'octubre', 
-  'noviembre', 
-  'diciembre'];
+document.addEventListener("DOMContentLoaded", () => {
+  const monthMap = {
+    1: "Enero",
+    2: "Febrero",
+    3: "Marzo",
+    4: "Abril",
+    5: "Mayo",
+    6: "Junio",
+    7: "Julio",
+    8: "Agosto",
+    9: "Septiembre",
+    10: "Octubre",
+    11: "Noviembre",
+    12: "Diciembre",
+  };
 
-function filterTable() {
-const selectedMonth = document.getElementById('monthSelect').value;
+  // Función para cargar los datos desde la API
+  async function loadPredictions() {
+    try {
+      const response = await fetch("/obtenerVentasPronosticadas");
 
-// Mostrar u ocultar el botón de "Agregar Ingreso"
-const indicadorRow = document.getElementById('otrosIngresosRow');
-if (selectedMonth === "") {
-  indicadorRow.style.display = 'none'; // Ocultar el botón si no se ha seleccionado mes
-  // Salir de la función si no se seleccionó mes
-  //return;
-} else {
-  indicadorRow.style.display = '';
-   // Mostrar el botón si se seleccionó un mes
-   
+      if (!response.ok) {
+        throw new Error(`Error en la API: ${response.status} ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      renderTable(data);
+    } catch (error) {
+      console.error("Error al cargar predicciones:", error);
+    }
+  }
+
+  // Función para renderizar la tabla con la columna de porcentajes fija
+  function renderTable(predictions) {
+    const monthsRow = document.getElementById("monthsRow");
+    const salesRow = document.querySelector("#incomeTable tbody tr");
+    const cashSalesRow = document.querySelector("#incomeTable tbody td ");
+
+    // Limpiar contenido previo
+    monthsRow.innerHTML = "";
+    salesRow.innerHTML = "";
+    cashSalesRow.innerHTML = "";
+
+    // Agregar columna fija para los porcentajes
+    const percentageHeader = document.createElement("th");
+    percentageHeader.textContent = "Tipo de porcentaje";
+    monthsRow.appendChild(percentageHeader);
+
+    const percentageCell = document.createElement("td");
+    percentageCell.textContent = "Ventas Pronosticadas";
+    salesRow.appendChild(percentageCell);
+
+   const cashCellHeader = document.createElement("th");
+    cashCellHeader.textContent = "Ventas en efectivo";
+    cashSalesRow.appendChild(cashCellHeader);
+
+
+    // Iterar sobre las predicciones
+    for (const [monthNumber, value] of Object.entries(predictions)) {
+      const monthName = monthMap[parseInt(monthNumber)];
+
+      // Crear y agregar encabezado del mes
+      const th = document.createElement("th");
+      th.textContent = monthName;
+      monthsRow.appendChild(th);
+
+      // Crear y agregar celda de ventas pronosticadas
+      const td = document.createElement("td");
+      td.textContent = value.toFixed(2); // Mostrar con dos decimales
+      salesRow.appendChild(td);
+
+
+      // Crear celda para ventas en efectivo (se actualizará dinámicamente)
+      const cashCell = document.createElement("td");
+      cashCell.id = `cashMonth${monthNumber}`; // ID único para cada mes
+      cashCell.textContent = "0.00"; // Inicializado a 0
+      cashSalesRow.appendChild(cashCell);
+    }
+  }
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////Funcion para actualizar valores de fila ventas efect //////////////////////////////
+
+function updateSalesValues() {
+  const cashPercentage = parseFloat(document.getElementById("cashPercentage").value) / 100;
+
+  // Iterar sobre las predicciones y actualizar la fila de ventas en efectivo
+  for (const [monthNumber, value] of Object.entries(predictions)) {
+    const cashValue = (value * cashPercentage).toFixed(2);
+    const cashCell = document.getElementById(`cashMonth${monthNumber}`);
+    if (cashCell) {
+      cashCell.textContent = cashValue;
+    }
+  }
 }
 
-const startIndex = months.indexOf(selectedMonth);
+// Actualizar los valores al cambiar el porcentaje
+document.getElementById("cashPercentage").addEventListener("input", updateSalesValues);
+  /////////////////////////////////////////////////////////////////////////////////
+  // Ejecución inicial para cargar los datos
+  loadPredictions();
 
-// Obtener las filas de la tabla
-const table = document.getElementById('incomeTable');
-const rows = table.rows;
+  // Resto del código para porcentajes
+  const defaultPercentages = {
+    cash: 45,
+    oneMonth: 34,
+    twoMonths: 21,
+  };
 
-// Recorre todas las filas de la tabla y oculta los meses antes del mes seleccionado
-for (let i = 0; i < rows.length; i++) {
-  const cells = rows[i].cells;
+  document.getElementById("cashPercentage").value = defaultPercentages.cash;
+  document.getElementById("oneMonthPercentage").value = defaultPercentages.oneMonth;
+  document.getElementById("twoMonthsPercentage").value = defaultPercentages.twoMonths;
+
+  function updateRemainingPercentage() {
+    const cash = parseFloat(document.getElementById("cashPercentage").value);
+    const oneMonth = parseFloat(document.getElementById("oneMonthPercentage").value);
+    const remaining = 100 - (cash + oneMonth);
+
+    if (remaining >= 0) {
+      document.getElementById("twoMonthsPercentage").value = remaining;
+      document.getElementById("errorMessage").style.display = "none";
+    } else {
+      document.getElementById("errorMessage").style.display = "block";
+    }
+  }
+
+  document.getElementById("cashPercentage").addEventListener("input", updateRemainingPercentage);
+  document.getElementById("oneMonthPercentage").addEventListener("input", updateRemainingPercentage);
+
   
-  for (let j = 1; j < cells.length; j++) {
-    if (j <= startIndex) {
-      cells[j].style.display = 'none'; // Oculta la columna
-    } else {
-      cells[j].style.display = ''; // Muestra la columna
-    }
-  }
-}
-
-// Mostrar los dos meses antes y dos meses después del seleccionado
-const monthsToShow = [];
-const monthsCount = months.length;
-
-for (let i = -2; i <= 2; i++) {
-  const monthIndex = (startIndex + i + monthsCount) % monthsCount;
-  monthsToShow.push(monthIndex);
-}
-// Guardar el tamaño del arreglo monthsToShow en localStorage
-localStorage.setItem('monthsToShowLength', monthsToShow.length);
-// Recorre todas las filas y muestra solo los meses seleccionados
-for (let i = 0; i < rows.length; i++) {
-  const cells = rows[i].cells;
-  for (let j = 1; j < cells.length; j++) {
-    if (monthsToShow.includes(j - 1)) {
-      cells[j].style.display = ''; // Muestra la columna
-    } else {
-      cells[j].style.display = 'none'; // Oculta la columna
-    }
-  }
-}
-}
-
-
-function addIncomeRow() {
-// Obtener la tabla
-const table = document.getElementById('incomeTable');
-
-// Crear una nueva fila
-const newRow = document.createElement('tr');
-
-// Crear la primera celda (Descripción de ingreso) con un input de texto
-const cellLabel = document.createElement('td');
-const descriptionInput = document.createElement('input');
-descriptionInput.type = 'text';
-descriptionInput.placeholder = 'Descripción del ingreso';
-descriptionInput.style.width = '150px'; // Ajustar el ancho según sea necesario
-descriptionInput.required = true; // Asegura que el campo no quede vacío
-
-cellLabel.appendChild(descriptionInput);
-newRow.appendChild(cellLabel);
-
-const storedLength = parseInt(localStorage.getItem('monthsToShowLength'), 10) || 0;
-
-// Crear inputs para las columnas de los meses (12 meses)
-for (let i = 0; i < storedLength  ; i++) { // 12 meses, comenzando de la columna 1 (Enero)
-  const cell = document.createElement('td');
-  const input = document.createElement('input');
-  input.type = 'number';
-  input.min = '0';
-  input.placeholder = '0';
-  input.style.width = '80px'; // Ajustar ancho si es necesario
-  input.required = true;
-
-  cell.appendChild(input);
-  newRow.appendChild(cell);
-}
-
-// Insertar la nueva fila antes del botón de "+ Agregar Ingreso"
-const indicadorRow = document.getElementById('indicador');
-table.tBodies[0].insertBefore(newRow, indicadorRow);
-}
-// Ajuste dinámico del botón
-const table = document.querySelector('table');
-const addButton = document.getElementById('otrosIngresosRows');
-addButton.addEventListener('click', function() {
-  const totalColumns = table.rows[0].cells.length;
-  const buttonCell = addButton.closest('td');
-  buttonCell.setAttribute('colspan', totalColumns);
-});*/
-////////////////////////////////////////////////////
-////////////////////////////////////////////////////
-const months = [
-  'enero',
-  'febrero', 
-  'marzo', 
-  'abril', 
-  'mayo', 
-  'junio', 
-  'julio', 
-  'agosto', 
-  'septiembre', 
-  'octubre', 
-  'noviembre', 
-  'diciembre'];
-
-function filterTable() {
-const selectedMonth = document.getElementById('monthSelect').value.trim().toLowerCase();
-const indicadorRow = document.getElementById('otrosIngresosRow');
-
-// Ocultar el botón si no se selecciona un mes válido
-if (selectedMonth === "" || !months.includes(selectedMonth)) {
-  indicadorRow.style.display = 'none'; // Ocultar el botón si no se ha seleccionado mes
-  return; // Detener la ejecución si no se seleccionó mes
-}
-
-// Mostrar el botón si se seleccionó un mes válido
-indicadorRow.style.display = '';
-
-const startIndex = months.indexOf(selectedMonth);
-
-// Obtener las filas de la tabla
-const table = document.getElementById('incomeTable');
-const rows = table.rows;
-
-// Mostrar solo los dos meses antes y dos meses después del seleccionado, con excepciones para enero y febrero
-const monthsToShow = [];
-const monthsCount = months.length;
-
-// Lógica especial para enero y febrero (mostrar noviembre, diciembre, enero, febrero, marzo)
-if (startIndex === 0) { // Si se seleccionó enero
-  monthsToShow.push(monthsCount - 2); // Diciembre
-  monthsToShow.push(monthsCount - 1); // Noviembre
-  monthsToShow.push(startIndex); // Enero
-  monthsToShow.push(1); // Febrero
-  monthsToShow.push(2); // Marzo
-} else if (startIndex === 1) { // Si se seleccionó febrero
-  monthsToShow.push(monthsCount - 1); // Diciembre
-  monthsToShow.push(startIndex - 1); // Enero
-  monthsToShow.push(startIndex); // Febrero
-  monthsToShow.push(2); // Marzo
-  monthsToShow.push(3); // Abril
-} else { // Para los demás meses (marzo en adelante)
-  for (let i = -2; i <= 2; i++) {
-    const monthIndex = (startIndex + i + monthsCount) % monthsCount;
-    monthsToShow.push(monthIndex);
-  }
-}
-
-// Guardar el tamaño del arreglo monthsToShow en localStorage
-localStorage.setItem('monthsToShowLength', monthsToShow.length);
-
-// Recorre todas las filas y muestra solo los meses seleccionados
-for (let i = 0; i < rows.length; i++) {
-  const cells = rows[i].cells;
-  for (let j = 1; j < cells.length; j++) {
-    if (monthsToShow.includes(j - 1)) {
-      cells[j].style.display = ''; // Muestra la columna
-    } else {
-      cells[j].style.display = 'none'; // Oculta la columna
-    }
-  }
-}
-
-// Ajuste dinámico del botón
-const tabler = document.querySelector('table');
-const addButton = document.getElementById('boton');
-addButton.addEventListener('click', function() {
-  const totalColumns = tabler.rows[0].cells.length;
-  const buttonCell = addButton.closest('td');
-  buttonCell.setAttribute('colspan', totalColumns);
 });
-}
+*/
 
-function addIncomeRow() {
-// Obtener la tabla
-const table = document.getElementById('incomeTable');
+// Función para cargar los datos desde la API
+// Función para cargar los datos desde la API
+async function loadPredictions() {
+  try {
+    const response = await fetch("/obtenerVentasPronosticadas");
 
-// Crear una nueva fila
-const newRow = document.createElement('tr');
+    if (!response.ok) {
+      throw new Error(`Error en la API: ${response.status} ${response.statusText}`);
+    }
 
-// Crear la primera celda (Descripción de ingreso) con un input de texto
-const cellLabel = document.createElement('td');
-const descriptionInput = document.createElement('input');
-descriptionInput.type = 'text';
-descriptionInput.placeholder = 'Descripción del ingreso';
-descriptionInput.style.width = '150px'; // Ajustar el ancho según sea necesario
-descriptionInput.required = true; // Asegura que el campo no quede vacío
+    const data = await response.json();
+    console.log("Datos recibidos:", data); // Verifica los datos que llegan
 
-cellLabel.appendChild(descriptionInput);
-newRow.appendChild(cellLabel);
+    // Verificar si los datos contienen las claves y valores esperados
+    if (typeof data !== 'object' || Object.keys(data).length === 0) {
+      console.error("Los datos no tienen la estructura esperada:", data);
+      return; // Detener la ejecución si los datos no son válidos
+    }
 
-const storedLength = parseInt(localStorage.getItem('monthsToShowLength'), 10) || 0;
-
-// Crear inputs para las columnas de los meses (12 meses)
-for (let i = 0; i < storedLength; i++) { // 12 meses, comenzando de la columna 1 (Enero)
-  const cell = document.createElement('td');
-  const input = document.createElement('input');
-  input.type = 'number';
-  input.min = '0';
-  input.placeholder = '0';
-  input.style.width = '80px'; // Ajustar ancho si es necesario
-  input.required = true;
-
-  cell.appendChild(input);
-  newRow.appendChild(cell);
+    renderTable(data); // Solo renderizar si los datos son válidos
+  } catch (error) {
+    console.error("Error al cargar predicciones:", error);
+  }
 }
 
 
+// Función para renderizar los datos en la tabla
+// Función para renderizar los datos en la tabla
+// Función para renderizar los datos en la tabla
+function renderTable(data) {
+  const monthNames = ["", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 
-// Insertar la nueva fila antes del botón de "+ Agregar Ingreso"
-const indicadorRow = document.getElementById('indicador');
-table.tBodies[0].insertBefore(newRow, indicadorRow);
+  // Verificar existencia de la tabla
+  const headerRow = document.querySelector(".income-table thead tr");
+  const forecastRow = document.querySelector(".income-table tbody tr:nth-child(1)");
+
+  if (!headerRow || !forecastRow) {
+    console.error("La estructura de la tabla no está correctamente definida.");
+    return;
+  }
+
+  // Renderizar encabezado
+  headerRow.innerHTML = "<th>MESES</th>";
+  Object.keys(data).forEach(month => {
+    const th = document.createElement("th");
+    th.textContent = monthNames[parseInt(month)];
+    headerRow.appendChild(th);
+  });
+
+  // Renderizar fila de pronósticos
+  forecastRow.innerHTML = "<td>Ventas Pronosticadas</td>";
+  Object.values(data).forEach(sale => {
+    const td = document.createElement("td");
+    td.textContent = !isNaN(sale) ? sale.toFixed(2) : "N/A";
+    td.dataset.value = sale;
+    forecastRow.appendChild(td);
+  });
 }
-/*// Ajuste dinámico del botón
-const table = document.querySelector('table');
-const addButton = document.getElementById('boton');
-addButton.addEventListener('click', function() {
-  const totalColumns = table.rows[0].cells.length;
-  const buttonCell = addButton.closest('td');
-  buttonCell.setAttribute('colspan', totalColumns);
-});*/
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const table = document.querySelector(".income-table");
+  if (!table) {
+    console.error("La tabla no existe en el DOM.");
+    return;
+  }
+
+  loadPredictions(); // Cargar datos desde la API
+
+  
+   setTimeout(updateCashRow, 500); //ejectur la funcion de vaores de porcentajes de los tipos de vneta
+});
+
+function updateCashRow() {
+  const forecastRow = document.querySelector(".income-table tbody tr:nth-child(1)"); // Ventas Pronosticadas
+  const cashRow = document.querySelector(".income-table tbody tr:nth-child(2)"); // Ventas en efectivo
+  const oneMonthRow = document.querySelector(".income-table tbody tr:nth-child(3)"); // Vencimiento a 1 mes
+  const twoMonthRow = document.querySelector(".income-table tbody tr:nth-child(4)"); //vencimneto a 2 meses
+
+  if (!forecastRow || !cashRow || !oneMonthRow || !twoMonthRow) {
+    console.error("No se encontraron las filas necesarias para actualizar.");
+    return;
+  }
+
+  // Obtener el porcentaje de la primera celda de "Ventas en efectivo"
+  const cashInput = cashRow.querySelector("input.cash-percentage");
+  if (!cashInput) {
+    console.error("No se encontró el input de porcentaje en la fila 'Ventas en efectivo'.");
+    return;
+  }
+
+  const percentage = parseFloat(cashInput.value) / 100 ;
+  if (isNaN(percentage)) {
+    console.error("El valor ingresado no es un número válido.");
+    return;
+  }
+
+  // Obtener el porcentaje de la primera celda de "Ventas vencimento a un mes "
+  const cashInput2 = oneMonthRow.querySelector("input.one-month-percentage");
+  if (!cashInput2) {
+    console.error("No se encontró el input de porcentaje en la fila 'Ventas vencimiento 1 mes'.");
+    return;
+  }
+
+  const porcentage2 = parseFloat(cashInput2.value) / 100;
+  if (isNaN(porcentage2)) {
+    console.error("El valor ingresado no es un número válido.");
+    return;
+  }
+
+  //Obtener el porcentaje de la seugunda celda de "ventas vencimento a dos meses"
+  const cashInput3 = twoMonthRow.querySelector("input.two-months-percentage");
+  if(!cashInput3){
+    console.error("No se encontró el input de porcentaje en la fila 'Ventas vencimineto a dos meses'.");
+    return;
+   }
+
+  const porcentage3 = parseFloat(cashInput3.value)/100;
+  if(isNaN(porcentage3)){
+    console.log("El valor ingresado no es un numero valido")
+    return;
+  }
+
+  // Iterar sobre las celdas de "Ventas Pronosticadas" y calcular valores
+  Array.from(forecastRow.querySelectorAll("td")).forEach((cell, index) => {
+    if (index === 0) return; // Saltar la primera celda (etiqueta)
+
+    const forecastValue = parseFloat(cell.dataset.value); // Obtener valor pronosticado
+    if (isNaN(forecastValue)) return;
+
+    // Asegurarse de que las filas de "Ventas en efectivo" , "Vencimiento a 1 mes"  y "vencimiento a 2 mess" tengan suficientes celdas
+    while (cashRow.cells.length <= index) {
+      cashRow.insertCell();
+    }
+
+    while (oneMonthRow.cells.length <= index) {
+      oneMonthRow.insertCell();
+    }
+
+    while (twoMonthRow.cells.length <= index){
+      twoMonthRow.insertCell();
+    }
+
+    // Calcular el valor para la celda correspondiente
+    const cashValue = forecastValue * percentage;
+    const targetCell = cashRow.cells[index];
+    targetCell.textContent = cashValue.toFixed(2); // Mostrar el valor calculado
+    targetCell.dataset.value = cashValue; // Guardar el valor en el atributo data-value
+
+     // Calcular el valor para "Vencimiento a 1 mes"
+     if (index === 1) {
+      // Para el primer mes (no se multiplica, se toma el valor directamente)
+      oneMonthRow.cells[index].textContent = '---------'; // Se toma el valor directamente
+    } else {
+      // Para los meses siguientes, tomar el valor del mes anterior y multiplicar
+      const prevMonthSale = parseFloat(forecastRow.cells[index - 1].dataset.value);
+      oneMonthRow.cells[index].textContent = (prevMonthSale * porcentage2).toFixed(2);
+    };
+
+
+    //calcular el valor para "Vencimiento a dos meses"
+    if (index === 1 || index === 2) {
+      // Para el primer mes (no se multiplica, se toma el valor directamente)
+      twoMonthRow.cells[index].textContent = '---------'; // Se toma el valor directamente
+    } else {
+      // Para los meses siguientes, tomar el valor del mes anterior y multiplicar
+      const prevMonthSale2 = parseFloat(forecastRow.cells[index - 2].dataset.value);
+      twoMonthRow.cells[index].textContent = (prevMonthSale2 * porcentage3).toFixed(2);
+    };
+  });
+
+  // Recalcular totales (si aplica)
+ //calculateTotals();
+ calculateColumnSums() ;
+
+}
+
+/*
+// Función para calcular los totales (no cambia)
+function calculateTotals() {
+  const rows = document.querySelectorAll(".income-table tbody tr:not(.total)");
+  const totalRow = document.querySelector(".income-table tbody tr.total");
+  const columnCount = document.querySelectorAll(".income-table thead th").length - 1; // Excluir encabezado "MESES"
+
+  for (let i = 0; i < columnCount; i++) {
+     //let totalRow = i;
+    let total = 0;
+    rows.forEach(row => {
+      const cell = row.children[i + 1]; // Ignorar primera celda
+      if (cell) {
+        // Obtener el valor numérico de la celda, si no es un número, tomarlo como 0
+        const value = parseFloat(cell.textContent);
+        total += isNaN(value) ? 0 : value; // Si no es un número, tomarlo como 0
+      }
+      console.log("Suma va por :" +total)
+    });
+    console.log("Contenido de totalRow en el if: " + totalRow);
+    console.log("Contenido de taal :"+total)
+    appendCell(totalRow, total.toFixed(2));
+  }
+}
+
+// Agregar celda a una fila
+function appendCell(row, content) {
+  console.log("El contenido de row es:" + row  + " y el de content es : " + content);
+  const td = document.createElement("td");
+  td.textContent = content;
+  row.appendChild(td);
+  console.log(row.appendChild(td));
+}*/
+////////////////////////////////////////////////////////////////////////
+document.addEventListener("input", (event) => {
+  if (event.target.classList.contains("cash-percentage") || 
+      event.target.classList.contains("one-month-percentage") || 
+      event.target.classList.contains("two-months-percentage")) {
+       //updateRemainingPercentage(); // Recalcular los porcentajes restantes
+        updateCashRow();
+    
+  }
+});
+
+function updateRemainingPercentage() {
+  const cashPercentage = parseFloat(document.querySelector(".cash-percentage").value) || 0;
+  const oneMonthPercentage = parseFloat(document.querySelector(".one-month-percentage").value) || 0;
+  const twoMonthPercentage = parseFloat(document.querySelector(".two-months-percentage").value) || 0;
+
+  const remainingPercentage = 100 - (cashPercentage + oneMonthPercentage);
+  
+  if (remainingPercentage >= 0) {
+    // Asignar automáticamente el porcentaje restante a "vencimiento a 2 meses"
+    document.querySelector(".one-months-percentage").value = parseInt(oneMonthPercentage);
+    document.querySelector(".cash-percentage").value = parseInt(cashPercentage);
+    document.querySelector(".two-months-percentage").value = remainingPercentage;
+    document.getElementById("errorMessage").style.display = "none"; // Ocultar mensaje de error
+    updateCashRow();
+  } else {
+    // Mostrar mensaje de error si los porcentajes suman más de 100
+    document.getElementById("errorMessage").style.display = "block";
+  }
+
+  
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////////
+////////////////////////Funcion para usumar los datos /////////////////////////////
+// Escuchar los eventos de clic en la tabla
+// Escuchar eventos de clic en la tabla para recalcular las sumas
+document.querySelector('.income-table').addEventListener('input',calculateColumnSums());
+
+function calculateColumnSums() {
+  const table = document.querySelector('.income-table'); // Seleccionar la tabla
+  const rows = Array.from(table.querySelectorAll('tbody tr')); // Obtener todas las filas del tbody
+  const columnCount = table.querySelectorAll('thead th').length - 1; // Número de columnas sin contar la descripción
+
+  const sums = Array(columnCount).fill(0); // Array para guardar la suma de cada columna
+
+  // Iterar por cada fila
+  rows.forEach(row => {
+    const cells = Array.from(row.querySelectorAll('td')); // Obtener todas las celdas del tr actual
+    cells.forEach((cell, index) => {
+      // Ignorar la primera celda (descripción) y verificar si el índice corresponde a una columna válida
+      if (index > 0 && index <= columnCount) {
+        const value = parseFloat(cell.textContent) || 0; // Convertir a número, usar 0 si no es válido
+        sums[index - 1] += value; // Acumular en el índice correspondiente del array de sumas
+      }
+    });
+  });
+
+  // Insertar las sumas en la fila "TOTAL INGRESOS"
+  const totalRow = table.querySelector('tr.total');
+  if (totalRow) {
+    // Asegurarse de que haya celdas suficientes en la fila de totales
+    while (totalRow.children.length < columnCount + 1) {
+      const newCell = document.createElement('td');
+      totalRow.appendChild(newCell);
+    }
+
+    // Actualizar las celdas de la fila de totales con las sumas
+    sums.forEach((sum, index) => {
+      totalRow.children[index + 1].textContent = sum.toFixed(2); // Mostrar la suma con 2 decimales
+    });
+  }
+}
+

@@ -15,28 +15,30 @@ from tensorflow.keras.models import load_model
 def cargar_datos_json(ruta_archivo):
     try:
         with open(ruta_archivo, 'r', encoding='utf-8') as archivo:
-            datos = json.load(archivo)
-        return datos
-    except FileNotFoundError:
-        print(f"El archivo JSON en {ruta_archivo} no se encontró.")
-        return []
-    except json.JSONDecodeError:
-        print(f"Error al decodificar el archivo JSON en {ruta_archivo}.")
-        return []
+            return json.load(archivo)
+    except (FileNotFoundError, json.JSONDecodeError) as e:
+        print(f"Error al cargar el archivo JSON: {e}")
+        return None
 
-# Ruta del archivo JSON
-ruta_json = 'D:/Downloads-NUEVO/Proyecto_teoria_de_la_simulacion/json/datosFormulario.json'
+# Función para guardar predicciones en un archivo JSON
+def guardar_predicciones_json(ruta_archivo, predicciones):
+    try:
+        # Convertir los valores a tipo `float` para serialización
+        predicciones_convertidas = {str(k): float(v) for k, v in predicciones.items()}
+        with open(ruta_archivo, 'w', encoding='utf-8') as archivo:
+            json.dump(predicciones_convertidas, archivo, ensure_ascii=False, indent=4)
+        print(f"Predicciones guardadas en {ruta_archivo}")
+    except Exception as e:
+        print(f"Error al guardar predicciones en JSON: {e}")
 
-# Cargar datos del JSON
-datos_json = cargar_datos_json(ruta_json)
+# Función para realizar predicciones basadas en el modelo y datos JSON
+def realizar_predicciones(ruta_json, modelo_path, scaler_path, ruta_salida_json):
+    # Cargar datos del JSON
+    datos_json = cargar_datos_json(ruta_json)
+    if not datos_json:
+        return "No se encontraron datos en el archivo JSON."
 
-# Verificar si se cargaron datos
-if not datos_json:
-    print("No se encontraron datos en el archivo JSON.")
-else:
-    print(f"Datos cargados del archivo JSON: {datos_json}")
-
-    # Asignar valores del JSON a variables (ya que es un solo objeto, no necesitas iterar)
+    # Asignar valores desde el JSON
     mes = datos_json.get('mes', 0)
     producto = datos_json.get('producto', 0)
     precio = datos_json.get('precio', 0)
@@ -50,75 +52,53 @@ else:
     puntos_venta = datos_json.get('puntosVenta', 0)
     canales = datos_json.get('canales', 0)
 
-    # Imprimir las variables para verificar
-    print(f"""
-    Mes: {mes}
-    Producto: {producto}
-    Precio: {precio}
-    Tipo de Venta: {tipo_venta}
-    Publicidad: {publicidad}
-    Garantía: {garantia}
-    Descuento: {descuento}
-    Edad Media: {edad_media}
-    Género Segmento: {genero_segmento}
-    País: {pais}
-    Puntos de Venta: {puntos_venta}
-    Canales: {canales}
-    """)
-
-    # Convertir los datos a un array numpy para el modelo
+    # Base de entrada
     nueva_entrada_base = np.array([[mes, producto, precio, descuento, publicidad, puntos_venta,
-                                    edad_media, genero_segmento, pais, garantia, canales,887, tipo_venta]])  #se elimino cantidad veddida 
-  
- 
+                                    edad_media, genero_segmento, pais, garantia, canales, 887, tipo_venta]])
 
+    # Cargar el modelo y el escalador
+    modelo = load_model(modelo_path)
+    scaler = joblib.load(scaler_path)
 
- 
-# Cargar el modelo y el escalador
-modelo = load_model('mi_modelo.keras')
-scaler = joblib.load('escalador.pkl')
+    # Ajustar la entrada para un mes específico
+    def ajustar_mes(entrada_base, mes):
+        entrada_modificada = entrada_base.copy()
+        entrada_modificada[0, 0] = mes
+        return entrada_modificada
 
-# Nueva entrada base (valores generales para las variables adicionales)
-##nueva_entrada_base = np.array([[12, 1, 0, 0, 0, 1, 30, 1, 1, 178, 0, 1, 18000, 1]])
- 
- 
+    # Generar predicciones para los meses seleccionados
+    meses_a_predecir = [
+        (mes - 2 - 1) % 12 + 1,  # Mes anterior al anterior
+        (mes - 1 - 1) % 12 + 1,  # Mes anterior
+        mes,                     # Mes actual
+        (mes + 1 - 1) % 12 + 1,  # Mes siguiente
+        (mes + 2 - 1) % 12 + 1   # Mes siguiente al siguiente
+    ]
 
-# Función para ajustar el mes en la entrada
-def ajustar_mes(entrada_base, mes):
-    entrada_modificada = entrada_base.copy()
-    entrada_modificada[0, 0] = mes  # Cambiar el valor del mes (posición 0)
-    return entrada_modificada
+    # Almacenar las predicciones
+    predicciones = {}
+    for mes_a_predecir in meses_a_predecir:
+        entrada = ajustar_mes(nueva_entrada_base, mes_a_predecir)
+        entrada_normalizada = scaler.transform(entrada)
+        prediccion = modelo.predict(entrada_normalizada)
+        predicciones[mes_a_predecir] = prediccion[0][0]  # np.float32
 
-# Generar predicciones para los meses: actual, anterior, siguiente, etc.
-mes_actual = mes
-meses_a_predecir = [
-    (mes_actual - 2 - 1) % 12 + 1,  # Mes anterior al anterior
-    (mes_actual - 1 - 1) % 12 + 1,  # Mes anterior
-    mes_actual,                     # Mes actual
-    (mes_actual + 1 - 1) % 12 + 1,  # Mes siguiente
-    (mes_actual + 2 - 1) % 12 + 1   # Mes siguiente al siguiente
-]
+        # Imprimir el resultado de la predicción
+        print(f"Mes {mes_a_predecir}: Predicción de ingresos {float(prediccion[0][0])}")
 
-# Almacenar las predicciones
-predicciones = {}
+    # Guardar las predicciones en el archivo JSON
+    guardar_predicciones_json(ruta_salida_json, predicciones)
 
-for mes in meses_a_predecir:
-    entrada = ajustar_mes(nueva_entrada_base, mes)
-    entrada_normalizada = scaler.transform(entrada)
-    prediccion = modelo.predict(entrada_normalizada)
-    predicciones[mes] = prediccion[0][0]
+    return predicciones
 
-# Mostrar resultados
-print("Predicciones por mes:")
-for mes, valor in predicciones.items():
-    print(f"Mes {mes}: Predicción de ingresos {valor}")
+# Rutas de los archivos necesarios
+ruta_json = 'D:/Downloads-NUEVO/Proyecto_teoria_de_la_simulacion/json/datosFormulario.json'
+modelo_path = 'mi_modelo.keras'
+scaler_path = 'escalador.pkl'
+ruta_salida_json = 'D:/Downloads-NUEVO/Proyecto_teoria_de_la_simulacion/json/PrediccionesRealizadas.json'
 
-# Opcional: usar datos del JSON para enriquecer las predicciones
-#for dato in datos_json:
-    # Ejemplo: incorporar datos del JSON en las predicciones
-  #  print(f"Usando dato adicional del JSON: {dato}")
+# Ejecutar la función y obtener resultados
+resultados = realizar_predicciones(ruta_json, modelo_path, scaler_path, ruta_salida_json)
 
-
-
-
-
+# Confirmación
+print("Resultados finales:", resultados)

@@ -19,5 +19,6 @@ allViewsRouter.get('/egresos', allViews.redirecEgresis);
 allViewsRouter.get('/neteo', allViews.redirecNeteo);
 dataFlowRouter.post('/procesar-datos', DataFlow.procesarDatos);
 //dataFlowRouter.post('/guardar-predecir', DataFlow.guardarPredecir);
+dataFlowRouter.get('/obtenerVentasPronosticadas', DataFlow.obtenerVentasPronosticadas);
 
 

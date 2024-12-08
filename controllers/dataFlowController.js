@@ -172,8 +172,6 @@ export class DataFlow {
            // res.status(200).json({ mensaje: "Datos sobrescritos correctamente en el archivo JSON" });
         });
         });
-
-
         
     };
 
@@ -199,6 +197,27 @@ export class DataFlow {
             res.redirect('http://localhost:3030/ingresos');
         });
     
+    };
+
+
+    static obtenerVentasPronosticadas= (req, res) =>{
+        const filePath = path.join(path.resolve(), 'json', 'PrediccionesRealizadas.json');
+
+        fs.readFile(filePath, 'utf8', (err, data) => {
+            if (err) {
+                console.error('Error al leer el archivo:', err);
+                return res.status(500).json({ mensaje: 'Error interno del servidor' });
+            }
+
+            try {
+                const predicciones = JSON.parse(data);
+                res.status(200).json(predicciones);
+            } catch (parseError) {
+                console.error('Error al parsear el JSON:', parseError);
+                res.status(500).json({ mensaje: 'Error al procesar los datos' });
+            }
+        });
+     
     };
 
 
