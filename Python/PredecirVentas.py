@@ -1,6 +1,14 @@
 import json
 import joblib
 import numpy as np
+import os
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
+import warnings
+warnings.filterwarnings('ignore', category=UserWarning, module='sklearn')
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
+
 from tensorflow.keras.models import load_model
 
 # Función para cargar datos desde un archivo JSON
@@ -62,6 +70,8 @@ else:
     nueva_entrada_base = np.array([[mes, producto, precio, descuento, publicidad, puntos_venta,
                                     edad_media, genero_segmento, pais, garantia, canales,887, tipo_venta]])  #se elimino cantidad veddida 
   
+ 
+
 
  
 # Cargar el modelo y el escalador

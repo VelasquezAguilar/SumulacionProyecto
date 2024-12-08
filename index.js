@@ -6,7 +6,7 @@ import bodyParser from 'body-parser';                    // Importación de body
 import mysql from 'mysql2';                              // Importación de mysql2
 import {dataFlowRouter} from "./routes/dataFlow.js"
 import { allViewsRouter } from './routes/dataFlow.js';
-
+//import { exec } from 'child_process';
 
 // Middleware para parsear las solicitudes con cuerpo JSON
 

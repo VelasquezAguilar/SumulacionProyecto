@@ -4,6 +4,7 @@ import sql from "mssql";
 let connectionPool;
 import fs from 'fs';
 import path from 'path';
+import { exec } from 'child_process';
 
 
 export class DataFlow {
@@ -148,66 +149,57 @@ export class DataFlow {
                 return res.status(500).json({ error: 'Error al guardar los datos en el archivo JSON' });
             }
     
+             // Ejecutar el script Python para hacer las predicciones
+         exec('python Python/PredecirVentas.py', (error, stdout, stderr) => {
+            if (error) {
+                console.error(`Error ejecutando el script Python: ${error.message}`);
+                return res.status(500).json({ success: false, message: 'Error al ejecutar el script' });
+            }
+
+            if (stderr) {
+                console.error(`Stderr del script Python: ${stderr}`);
+                return res.status(500).json({ success: false, message: 'Error en el script Python' });
+            }
+
+            console.log(`Salida del script Python: ${stdout}`);
+             
+             // Redirigir al usuario a la nueva ruta
+            
+            // Después de ejecutar el script, devolver una respuesta de éxito
+            res.status(200).json({ success: true, redirectTo: '/ingresos' });
+            
             // Responder con éxito
-            res.status(200).json({ mensaje: "Datos sobrescritos correctamente en el archivo JSON" });
+           // res.status(200).json({ mensaje: "Datos sobrescritos correctamente en el archivo JSON" });
         });
+        });
+
+
+        
     };
-    
-/*
-    static procesarDatos = (req, res) => {
-        const datos = req.body;
-    
-        // Validar que se recibieron los datos
-        if (!datos || Object.keys(datos).length === 0) {
-            return res.status(400).json({ error: 'No se recibieron datos' });
-        }
-    
-        console.log("Datos recibidos del frontend:", datos);
-    
-        // Obtener la ruta del directorio actual
-        const __dirname = path.resolve();
-    
-        // Obtener la ruta absoluta del archivo JSON
-        const filePath = path.join(__dirname, 'json', 'datosFormulario.json');
-    
-        // Leer el archivo JSON existente
-        fs.readFile(filePath, 'utf-8', (err, data) => {
-            let datosGuardados = [];
-    
-            if (err) {
-                if (err.code === 'ENOENT') {
-                    // Si el archivo no existe, lo tratamos como un archivo nuevo
-                    console.log("Archivo JSON no encontrado, crearemos uno nuevo.");
-                } else {
-                    console.error("Error al leer el archivo:", err);
-                    return res.status(500).json({ error: 'Error al leer el archivo JSON' });
-                }
-            } else if (data.trim() !== '') {
-                try {
-                    datosGuardados = JSON.parse(data); // Parsear los datos existentes
-                } catch (parseError) {
-                    console.error("Error al parsear el archivo JSON:", parseError);
-                    return res.status(500).json({ error: 'El archivo JSON está dañado' });
-                }
+
+
+
+    //Metodo para ejecutar el archivo python para hacer la prediccion 
+    static ingresoPrediciendo = (req, res) => {
+        // Ejecutar el archivo Python
+        exec('python3 PredecirVentas.py', (error, stdout, stderr) => {
+            if (error) {
+                console.error(`Error ejecutando Python: ${error.message}`);
+                return res.status(500).send('Error al ejecutar el script');
             }
     
-            // Agregar los nuevos datos al array
-            datosGuardados.push(datos);
+            if (stderr) {
+                console.error(`Stderr de Python: ${stderr}`);
+                return res.status(500).send('Error al ejecutar el script');
+            }
     
-            // Escribir los datos actualizados en el archivo JSON
-            fs.writeFile(filePath, JSON.stringify(datosGuardados, null, 2), (err) => {
-                if (err) {
-                    console.error("Error al guardar los datos:", err);
-                    return res.status(500).json({ error: 'Error al guardar los datos en el archivo JSON' });
-                }
+            console.log(`Salida de Python: ${stdout}`);
     
-                // Responder con éxito
-                res.status(200).json({ mensaje: "Datos guardados correctamente" });
-            });
+            // Redirigir al usuario a la nueva ruta
+            res.redirect('http://localhost:3030/ingresos');
         });
-    };
-    */
     
+    };
 
 
 };

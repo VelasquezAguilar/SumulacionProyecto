@@ -30,7 +30,7 @@ document.querySelector(".save-button").addEventListener("click", function (event
     procesarDatosFormulario();
 
     enviarDatosAlBackend();
-
+    
     // Confirmación al usuario
     alert("Los datos han sido guardados exitosamente en Local Storage.");
 
@@ -106,7 +106,7 @@ function procesarDatosFormulario() {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////// Procesar los dato de  el formulario para enviarlos a la red neurona //////////////////////
 // Enviar los datos procesados al backend
-async function enviarDatosAlBackend() {
+/*async function enviarDatosAlBackend() {
     const datosProcesados = procesarDatosFormulario();
 
     if (!datosProcesados) {
@@ -126,13 +126,49 @@ async function enviarDatosAlBackend() {
         if (respuesta.ok) {
             const resultado = await respuesta.json();
             console.log("Respuesta del backend:", resultado);
+            
         } else {
             console.error("Error al enviar datos:", respuesta.statusText);
         }
     } catch (error) {
         console.error("Error en la solicitud:", error);
     }
+}*/
+
+async function enviarDatosAlBackend() {
+
+    const datosProcesados = procesarDatosFormulario();
+    if (!datosProcesados) {
+        console.error("No se pudieron procesar los datos.");
+        return;
+    }
+
+    try {
+        const response = await fetch('/procesar-datos', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(datosProcesados)
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error en la solicitud: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+
+        if (data.redirectTo) {
+            // Redirigir al usuario a la nueva vista
+            window.location.href = data.redirectTo;
+        } else {
+            console.log('Respuesta del servidor:', data);
+        }
+    } catch (error) {
+        console.error('Error en la solicitud:', error);
+    }
 }
+
 
 
 
