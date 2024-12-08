@@ -1,9 +1,11 @@
-function addIncomeRow() {
+/*function addIncomeRow() {
   // Obtener la tabla usando la clase en lugar de un ID
   const table = document.querySelector('.income-table');
 
   // Crear una nueva fila
-  const newRow = document.createElement('tr');
+  const newRow = document.createElement('tr');  // Crear la fila <tr>
+  newRow.classList.add('OTROS');  // Agregar la clase 'OTROS' a la fila <tr>
+
 
   // Crear la primera celda (Descripción de ingreso) con un input de texto
   const cellLabel = document.createElement('td');
@@ -33,12 +35,120 @@ function addIncomeRow() {
 
     cell.appendChild(input);
     newRow.appendChild(cell);
+
+  }
+  
+ 
+  // Insertar la nueva fila antes de la fila "OTROS INGRESOS"
+  const lastRow = table.querySelector('tbody tr:last-child');
+  table.tBodies[0].insertBefore(newRow, lastRow);
+
+}*/// Función para inicializar la tabla con datos desde localStorage
+function inicializarTablaDesdeLocalStorage() {
+  const table = document.querySelector('.income-table');
+  const datosTabla = JSON.parse(localStorage.getItem('datosOtrosIngresos')) || [];
+
+  datosTabla.forEach(fila => {
+    const newRow = document.createElement('tr');
+    newRow.classList.add('OTROS');
+
+    // Crear celda para la descripción
+    const cellLabel = document.createElement('td');
+    const descriptionInput = document.createElement('input');
+    descriptionInput.type = 'text';
+    descriptionInput.value = fila.descripcion || '';
+    descriptionInput.style.width = '150px';
+    descriptionInput.required = true;
+    descriptionInput.addEventListener('input', () => actualizarLocalStorage());
+    cellLabel.appendChild(descriptionInput);
+    newRow.appendChild(cellLabel);
+
+    // Crear celdas para los meses
+    fila.valores.forEach(valor => {
+      const cell = document.createElement('td');
+      const input = document.createElement('input');
+      input.type = 'float';
+      input.value = valor || '';
+      input.placeholder = '0';
+      input.style.width = '100px';
+      input.required = false;
+      input.addEventListener('input', () => actualizarLocalStorage());
+      cell.appendChild(input);
+      newRow.appendChild(cell);
+    });
+
+    // Insertar la nueva fila antes de la fila "OTROS INGRESOS"
+    const lastRow = table.querySelector('tbody tr:last-child');
+    table.tBodies[0].insertBefore(newRow, lastRow);
+  });
+}
+
+// Función para guardar los datos de la tabla en localStorage
+function actualizarLocalStorage() {
+  const table = document.querySelector('.income-table');
+  const rows = table.querySelectorAll('tbody tr.OTROS');
+
+  const datosTabla = Array.from(rows).map(row => {
+    const inputs = row.querySelectorAll('input');
+    const descripcion = inputs[0].value; // El primer input es la descripción
+    const valores = Array.from(inputs).slice(1).map(input => parseFloat(input.value) || 0); // Resto de inputs
+
+    return { descripcion, valores };
+  });
+
+  localStorage.setItem('datosOtrosIngresos', JSON.stringify(datosTabla));
+  actualizarTotalesDesdeLocalStorage();
+}
+
+// Función para agregar una nueva fila
+function addIncomeRow() {
+  const table = document.querySelector('.income-table');
+  const headerCells = table.querySelectorAll('thead tr th');
+  const storedLength = headerCells.length - 1; // Número de columnas (menos la primera)
+
+  // Crear nueva fila
+  const newRow = document.createElement('tr');
+  newRow.classList.add('OTROS');
+
+  // Crear celda para la descripción
+  const cellLabel = document.createElement('td');
+  const descriptionInput = document.createElement('input');
+  descriptionInput.type = 'text';
+  descriptionInput.placeholder = 'Descripción del ingreso';
+  descriptionInput.style.width = '150px';
+  descriptionInput.required = true;
+  descriptionInput.addEventListener('input', () => actualizarLocalStorage());
+  cellLabel.appendChild(descriptionInput);
+  newRow.appendChild(cellLabel);
+
+  // Crear celdas para los meses
+  for (let i = 0; i < storedLength; i++) {
+    const cell = document.createElement('td');
+    const input = document.createElement('input');
+    input.type = 'float';
+    input.placeholder = '0';
+    input.style.width = '100px';
+    input.required = false;
+    input.addEventListener('input', () => actualizarLocalStorage());
+    cell.appendChild(input);
+    newRow.appendChild(cell);
   }
 
   // Insertar la nueva fila antes de la fila "OTROS INGRESOS"
   const lastRow = table.querySelector('tbody tr:last-child');
   table.tBodies[0].insertBefore(newRow, lastRow);
+
+  // Actualizar el almacenamiento local
+  actualizarLocalStorage();
+  actualizarTotalesDesdeLocalStorage();
+
 }
+
+// Inicializar la tabla al cargar la página
+document.addEventListener('DOMContentLoaded', () => {
+  inicializarTablaDesdeLocalStorage();
+});
+
 
 
 
@@ -178,7 +288,6 @@ document.getElementById("cashPercentage").addEventListener("input", updateSalesV
 */
 
 // Función para cargar los datos desde la API
-// Función para cargar los datos desde la API
 async function loadPredictions() {
   try {
     const response = await fetch("/obtenerVentasPronosticadas");
@@ -203,8 +312,6 @@ async function loadPredictions() {
 }
 
 
-// Función para renderizar los datos en la tabla
-// Función para renderizar los datos en la tabla
 // Función para renderizar los datos en la tabla
 function renderTable(data) {
   const monthNames = ["", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
@@ -246,8 +353,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   loadPredictions(); // Cargar datos desde la API
 
-  
-   setTimeout(updateCashRow, 500); //ejectur la funcion de vaores de porcentajes de los tipos de vneta
+
+  setTimeout(updateCashRow, 500); //ejectur la funcion de vaores de porcentajes de los tipos de vneta
 });
 
 function updateCashRow() {
@@ -268,7 +375,7 @@ function updateCashRow() {
     return;
   }
 
-  const percentage = parseFloat(cashInput.value) / 100 ;
+  const percentage = parseFloat(cashInput.value) / 100;
   if (isNaN(percentage)) {
     console.error("El valor ingresado no es un número válido.");
     return;
@@ -289,13 +396,13 @@ function updateCashRow() {
 
   //Obtener el porcentaje de la seugunda celda de "ventas vencimento a dos meses"
   const cashInput3 = twoMonthRow.querySelector("input.two-months-percentage");
-  if(!cashInput3){
+  if (!cashInput3) {
     console.error("No se encontró el input de porcentaje en la fila 'Ventas vencimineto a dos meses'.");
     return;
-   }
+  }
 
-  const porcentage3 = parseFloat(cashInput3.value)/100;
-  if(isNaN(porcentage3)){
+  const porcentage3 = parseFloat(cashInput3.value) / 100;
+  if (isNaN(porcentage3)) {
     console.log("El valor ingresado no es un numero valido")
     return;
   }
@@ -316,7 +423,7 @@ function updateCashRow() {
       oneMonthRow.insertCell();
     }
 
-    while (twoMonthRow.cells.length <= index){
+    while (twoMonthRow.cells.length <= index) {
       twoMonthRow.insertCell();
     }
 
@@ -326,14 +433,18 @@ function updateCashRow() {
     targetCell.textContent = cashValue.toFixed(2); // Mostrar el valor calculado
     targetCell.dataset.value = cashValue; // Guardar el valor en el atributo data-value
 
-     // Calcular el valor para "Vencimiento a 1 mes"
-     if (index === 1) {
+    // Calcular el valor para "Vencimiento a 1 mes"
+    if (index === 1) {
       // Para el primer mes (no se multiplica, se toma el valor directamente)
       oneMonthRow.cells[index].textContent = '---------'; // Se toma el valor directamente
     } else {
       // Para los meses siguientes, tomar el valor del mes anterior y multiplicar
       const prevMonthSale = parseFloat(forecastRow.cells[index - 1].dataset.value);
-      oneMonthRow.cells[index].textContent = (prevMonthSale * porcentage2).toFixed(2);
+      //oneMonthRow.cells[index].textContent = (prevMonthSale * porcentage2).toFixed(2);
+      const cashValue2 = prevMonthSale * porcentage2;
+      const targetCell2 = oneMonthRow.cells[index];
+      targetCell2.textContent = cashValue2.toFixed(2); // Mostrar el valor calculado
+      targetCell2.dataset.value = cashValue2; // Guardar el valor en el atributo data-value
     };
 
 
@@ -343,16 +454,158 @@ function updateCashRow() {
       twoMonthRow.cells[index].textContent = '---------'; // Se toma el valor directamente
     } else {
       // Para los meses siguientes, tomar el valor del mes anterior y multiplicar
-      const prevMonthSale2 = parseFloat(forecastRow.cells[index - 2].dataset.value);
-      twoMonthRow.cells[index].textContent = (prevMonthSale2 * porcentage3).toFixed(2);
+      const prevMonthSale3 = parseFloat(forecastRow.cells[index - 2].dataset.value);
+      //twoMonthRow.cells[index].textContent = (prevMonthSale2 * porcentage3).toFixed(2);
+      const cashValue3 = prevMonthSale3 * porcentage3;
+      const targetCell3 = twoMonthRow.cells[index];
+      targetCell3.textContent = cashValue3.toFixed(2); // Mostrar el valor calculado
+      targetCell3.dataset.value = cashValue3; // Guardar el valor en el atributo data-value
     };
+
+    guardarDatosEnLocalStorage();
+    actualizarTotalesDesdeLocalStorage();
+    // Llamada a la función
+    let celdasConTotal = obtenerTDCeldasTotal();
+    console.log(celdasConTotal);
   });
 
-  // Recalcular totales (si aplica)
- //calculateTotals();
- calculateColumnSums() ;
 
+
+
+  function obtenerTDCeldasTotal() {
+    // Seleccionar todas las filas con la clase "total"
+    let filasTotal = document.querySelectorAll('tr.total');
+
+    // Crear un arreglo para almacenar los datos de las celdas
+    let celdasTotal = [];
+
+    // Recorrer todas las filas con la clase "total"
+    filasTotal.forEach(fila => {
+      // Obtener todas las celdas (td) de la fila
+      let celdas = fila.querySelectorAll('td');
+
+      // Almacenar los valores de las celdas en el arreglo
+      celdas.forEach(celda => {
+        celdasTotal.push(celda.textContent.trim()); // Se obtiene el texto y se elimina el espacio extra
+      });
+    });
+
+    // Retornar el arreglo con los valores de las celdas
+    return celdasTotal;
+  }
+
+
+
+  /*
+    function actualizarTotalesDesdeLocalStorage() {
+      // Obtener los datos almacenados en localStorage
+      let datosTabla = JSON.parse(localStorage.getItem('datosTabla')) || [];
+      
+      // Verificar si hay datos
+      if (!Array.isArray(datosTabla) || datosTabla.length === 0) {
+          console.warn('No hay datos válidos en localStorage.');
+          return;
+      }
+  
+      // Seleccionar la fila con clase "total"
+      let filaTotal = document.querySelector('tr.total');
+  
+      if (!filaTotal) {
+          console.error('No se encontró la fila con clase "total".');
+          return;
+      }
+  
+      // Obtener todas las celdas de la fila "total"
+      let celdasTotal = filaTotal.querySelectorAll('td');
+  
+      // Iterar sobre las columnas 2 a 6 (índices 1 a 5 en datosTabla)
+      for (let colIndex = 2; colIndex <= 6; colIndex++) {
+          let sumaColumna = 0;
+  
+          // Sumar los valores de la columna correspondiente en todos los objetos
+          datosTabla.forEach(obj => {
+              let valor = parseFloat(obj[`columna${colIndex}`]) || 0; // Convertir a número o asignar 0
+              sumaColumna += valor;
+          });
+  
+          // Insertar el valor calculado en el TD correspondiente
+          if (celdasTotal[colIndex - 1]) { // Restar 1 para obtener el índice en celdasTotal
+              celdasTotal[colIndex - 1].textContent = sumaColumna.toFixed(2); // Formatear a 2 decimales
+          } else {
+              console.warn(`No se encontró la celda para la columna ${colIndex}.`);
+          }
+      }
+  }
+  
+  */
+} function actualizarTotalesDesdeLocalStorage() {
+  // Obtener los datos almacenados en localStorage
+  let datosTabla = JSON.parse(localStorage.getItem('datosTabla')) || [];
+  let datosOtrosIngresos = JSON.parse(localStorage.getItem('datosOtrosIngresos')) || [];
+
+  // Verificar si hay datos
+  if (!Array.isArray(datosTabla) || datosTabla.length === 0) {
+    console.warn('No hay datos válidos en localStorage para "datosTabla".');
+  }
+
+  if (!Array.isArray(datosOtrosIngresos)) {
+    console.warn('No hay datos válidos en localStorage para "datosOtrosIngresos".');
+    datosOtrosIngresos = [];
+  }
+
+  // Seleccionar la fila con clase "total"
+  let filaTotal = document.querySelector('tr.total');
+
+  if (!filaTotal) {
+    console.error('No se encontró la fila con clase "total".');
+    return;
+  }
+   // Crear un objeto para almacenar los totales
+   let totales = {};
+  // Obtener todas las celdas de la fila "total"
+  let celdasTotal = filaTotal.querySelectorAll('td');
+
+  // Iterar sobre las columnas 2 a 6 (índices 1 a 5 en datosTabla)
+  for (let colIndex = 2; colIndex <= 6; colIndex++) {
+    let sumaColumna = 0;
+
+    // Sumar los valores de la columna correspondiente en todos los objetos de datosTabla
+    datosTabla.forEach(obj => {
+      let valor = parseFloat(obj[`columna${colIndex}`]) || 0; // Convertir a número o asignar 0
+      sumaColumna += valor;
+    });
+
+    // Sumar el primer valor del arreglo `valores` de cada objeto en datosOtrosIngresos
+    datosOtrosIngresos.forEach(obj => {
+      if (obj.valores && Array.isArray(obj.valores) && obj.valores.length >= (colIndex - 1)) {
+        let valorOtroIngreso = parseFloat(obj.valores[colIndex - 2]) || 0; // Restar 2 porque las columnas empiezan en índice 2
+        sumaColumna += valorOtroIngreso;
+      }
+    });
+
+    // Insertar el valor calculado en el TD correspondiente
+    if (celdasTotal[colIndex - 1]) { // Restar 1 para obtener el índice en celdasTotal
+      celdasTotal[colIndex - 1].textContent = sumaColumna.toFixed(2); // Formatear a 2 decimales
+    } else {
+      console.warn(`No se encontró la celda para la columna ${colIndex}.`);
+    }
+    // Guardar el total en el objeto de totales
+    totales[`columna${colIndex}`] = sumaColumna.toFixed(2);
+  }
+
+  // Guardar el objeto totales en localStorage
+  localStorage.setItem('totalesTabla', JSON.stringify(totales));
 }
+
+
+
+
+
+// Recalcular totales (si aplica)
+//calculateTotals();
+//calculateColumnSums() ;
+
+
 
 /*
 // Función para calcular los totales (no cambia)
@@ -389,12 +642,13 @@ function appendCell(row, content) {
 }*/
 ////////////////////////////////////////////////////////////////////////
 document.addEventListener("input", (event) => {
-  if (event.target.classList.contains("cash-percentage") || 
-      event.target.classList.contains("one-month-percentage") || 
-      event.target.classList.contains("two-months-percentage")) {
-       //updateRemainingPercentage(); // Recalcular los porcentajes restantes
-        updateCashRow();
-    
+  if (event.target.classList.contains("cash-percentage") ||
+    event.target.classList.contains("one-month-percentage") ||
+    event.target.classList.contains("two-months-percentage")) {
+    //updateRemainingPercentage(); // Recalcular los porcentajes restantes
+
+    updateCashRow();
+
   }
 });
 
@@ -404,7 +658,7 @@ function updateRemainingPercentage() {
   const twoMonthPercentage = parseFloat(document.querySelector(".two-months-percentage").value) || 0;
 
   const remainingPercentage = 100 - (cashPercentage + oneMonthPercentage);
-  
+
   if (remainingPercentage >= 0) {
     // Asignar automáticamente el porcentaje restante a "vencimiento a 2 meses"
     document.querySelector(".one-months-percentage").value = parseInt(oneMonthPercentage);
@@ -417,49 +671,78 @@ function updateRemainingPercentage() {
     document.getElementById("errorMessage").style.display = "block";
   }
 
-  
+
 }
 
+// Función para recalcular la suma
+function recalcularSuma() {
+  let celdas = document.querySelectorAll(" tbody tr:not(:first-child) ");
+  //celdas.forEach((celda, index) => {
+  //  console.log("Contenido de la celda en la posición " + index + ": " + celda.textContent.trim());
+  //});
 
+  let suma = 0;
 
-///////////////////////////////////////////////////////////////////////////////////
-////////////////////////Funcion para usumar los datos /////////////////////////////
-// Escuchar los eventos de clic en la tabla
-// Escuchar eventos de clic en la tabla para recalcular las sumas
-document.querySelector('.income-table').addEventListener('input',calculateColumnSums());
-
-function calculateColumnSums() {
-  const table = document.querySelector('.income-table'); // Seleccionar la tabla
-  const rows = Array.from(table.querySelectorAll('tbody tr')); // Obtener todas las filas del tbody
-  const columnCount = table.querySelectorAll('thead th').length - 1; // Número de columnas sin contar la descripción
-
-  const sums = Array(columnCount).fill(0); // Array para guardar la suma de cada columna
-
-  // Iterar por cada fila
-  rows.forEach(row => {
-    const cells = Array.from(row.querySelectorAll('td')); // Obtener todas las celdas del tr actual
-    cells.forEach((cell, index) => {
-      // Ignorar la primera celda (descripción) y verificar si el índice corresponde a una columna válida
-      if (index > 0 && index <= columnCount) {
-        const value = parseFloat(cell.textContent) || 0; // Convertir a número, usar 0 si no es válido
-        sums[index - 1] += value; // Acumular en el índice correspondiente del array de sumas
-      }
-    });
+  celdas.forEach(celda => {
+    suma += parseFloat(celda.textContent) || 0;
+    console.log("La suma es :" + suma);
   });
 
-  // Insertar las sumas en la fila "TOTAL INGRESOS"
-  const totalRow = table.querySelector('tr.total');
-  if (totalRow) {
-    // Asegurarse de que haya celdas suficientes en la fila de totales
-    while (totalRow.children.length < columnCount + 1) {
-      const newCell = document.createElement('td');
-      totalRow.appendChild(newCell);
-    }
+  // Seleccionar la fila y actualizar el total
+  let celdaTotal = document.querySelector("tr .total").parentElement.querySelectorAll("td")[1];
+  celdaTotal.textContent = suma;
+  guardarDatosEnLocalStorage();
 
-    // Actualizar las celdas de la fila de totales con las sumas
-    sums.forEach((sum, index) => {
-      totalRow.children[index + 1].textContent = sum.toFixed(2); // Mostrar la suma con 2 decimales
-    });
-  }
 }
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////Funcion para obtenr los datos de las filas de ventas /////////////////////////////////
+
+function guardarDatosEnLocalStorage() {
+  // Crear un arreglo para almacenar las filas formateadas
+  let datos = [];
+
+  // Seleccionar todas las filas con las clases VE, VV1M, VV2M y OTROS
+  let filas = document.querySelectorAll("table tbody tr.VE, table tbody tr.VV1M, table tbody tr.VV2M");
+
+  // Recorrer todas las filas seleccionadas
+  filas.forEach(fila => {
+    // Obtener todas las celdas (td) de la fila
+    let celdas = fila.querySelectorAll('td');
+
+    // Crear un objeto para almacenar los valores de cada fila
+    let filaDatos = {};
+
+    // Recorrer todas las celdas y almacenar sus valores en el objeto
+    // Recorrer todas las celdas y almacenar sus valores en el objeto
+    celdas.forEach((celda, index) => {
+      // Si la celda contiene un input, obtenemos el valor del input, de lo contrario, obtenemos el textContent
+      if (celda.querySelector('input')) {
+        // Si la celda tiene un input, obtenemos el valor del input
+        filaDatos[`columna${index + 1}`] = celda.querySelector('input').value.trim();
+      } else {
+        // De lo contrario, obtenemos el textContent de la celda
+        filaDatos[`columna${index + 1}`] = celda.textContent.trim();
+      }
+    });
+
+    // Agregar el objeto de la fila al arreglo de datos
+    datos.push(filaDatos);
+  });
+
+  // Convertir el arreglo de datos a JSON
+  let datosJSON = JSON.stringify(datos);
+
+  // Guardar los datos en localStorage
+  localStorage.setItem('datosTabla', datosJSON);
+
+  // Confirmación en consola
+  console.log("Datos guardados en localStorage:", datosJSON);
+}
+
+// Llamada a la función
+guardarDatosEnLocalStorage();
 

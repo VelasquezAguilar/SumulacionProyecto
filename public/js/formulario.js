@@ -1,5 +1,6 @@
 
 document.querySelector(".save-button").addEventListener("click", function (event) {
+    
     event.preventDefault(); // Evita que el formulario se envíe por defecto
 
     // Captura los valores del formulario
@@ -23,7 +24,7 @@ document.querySelector(".save-button").addEventListener("click", function (event
         alert("Por favor, completa todos los campos antes de guardar.");
         return;
     }
-
+    localStorage.clear();
     // Almacena los datos en Local Storage
     localStorage.setItem("registroFormulario", JSON.stringify(datosFormulario));
     
@@ -168,6 +169,28 @@ async function enviarDatosAlBackend() {
         console.error('Error en la solicitud:', error);
     }
 }
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////Funcion par alimpiar el LocalStorage ///////////////////////////
+
+function limpiarTodoLocalStorage() {
+    // Confirmar si el usuario realmente quiere borrar todos los datos
+    if (confirm("¿Estás seguro de que deseas borrar todos los datos almacenados en el localStorage?")) {
+        // Limpiar todo el localStorage
+        localStorage.clear();
+        alert("Todos los datos se han eliminado del localStorage.");
+    }
+}
+
+// Agregar la función a un botón para ejecutarla
+document.querySelector('#btnLimpiarTodo').addEventListener('click', limpiarTodoLocalStorage);
+
 
 
 

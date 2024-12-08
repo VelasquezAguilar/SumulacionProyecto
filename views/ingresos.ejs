@@ -210,11 +210,11 @@
     <div>
       <div class="nombre-pagina">
         <ion-icon id="logo" name="logo-firefox"></ion-icon>
-        <span>APEX</span>
+        <span>SIMULA</span>
       </div>
       <button class="boton">
         <ion-icon name="add-outline"></ion-icon>
-        <span>Create new</span>
+        <span>Crear nuevo</span>
       </button>
     </div>
 
@@ -317,7 +317,7 @@
           <!-- Las celdas de las ventas se insertarán dinámicamente aquí -->
           
         </tr>
-        <tr>
+        <tr  class="VE">
           <td>Ventas en efectivo
           <input type="number" class="cash-percentage" value="45" min="0" max="100"></td>
           <td></td> <!-- Celdas para cada mes -->
@@ -326,8 +326,8 @@
           <td></td> 
           <td></td>
         </tr>
-        <tr>
-          <td>Vencimiento a un mes
+        <tr  class="VV1M">
+          <td >Vencimiento a un mes
           <input type="number" class="one-month-percentage" value="34" min="0" max="100"></td>
           <td></td> <!-- Celdas para cada mes -->
           <td></td>
@@ -335,7 +335,7 @@
           <td></td> 
           <td></td>
         </tr>
-        <tr>
+        <tr  class="VV2M">
           <td>Vencimiento a dos meses
           <input type="number" class="two-months-percentage" value="21" min="0" max="100" ></td>
           <td></td> <!-- Celdas para cada mes -->
@@ -344,13 +344,13 @@
           <td></td> 
           <td></td>
         </tr>
-        <tr>
+        <tr >
           <td>OTROS INGRESOS</td>
           <td colspan="9999">
             <button  onclick="addIncomeRow()">+ Agregar Ingreso</button>
           </td>
         </tr>
-        <tr>
+        <tr class="total" >
           <td class="total">TOTAL INGRESOS</td>
           <!-- Las celdas de totales se insertarán dinámicamente aquí -->
            <td></td>
