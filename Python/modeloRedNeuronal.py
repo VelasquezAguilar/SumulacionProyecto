@@ -67,8 +67,8 @@ from sklearn.preprocessing import MinMaxScaler
 input_columns = [
 'Mes','ProductoID',  'PrecioUnitario', 'DescuentoAplicado', 
     'PublicidadRealizada', 'Competidores', 'EdadSegmento', 'GeneroSegmento', 
-    'PaisID', 'GarantiaAplicada', 'MedioDistribucion', 'PoderAdquisitivo',  'TipoVenta','CantidadVendida'
-]
+    'PaisID', 'GarantiaAplicada', 'MedioDistribucion', 'PoderAdquisitivo',  'TipoVenta'
+]  #se elimno  ,'CantidadVendida'
 
 # Instanciar el scaler
 scaler = MinMaxScaler()

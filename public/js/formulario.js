@@ -57,7 +57,7 @@ function procesarDatosFormulario() {
     const mes = new Date(fecha).getMonth() + 1; // `getMonth()` devuelve de 0 a 11
 
     // Eliminar las comas del precio
-    const precio = datosFormulario.precio.replace(/./g, "");
+    //const precio = datosFormulario.precio.replace(/./g, "");
 
     // Calcular la media de edad según el rango seleccionado
     const edadSegmento = datosFormulario.edadSegmento;
@@ -83,7 +83,7 @@ function procesarDatosFormulario() {
     const datosProcesados = {
         mes: mes,
         producto: datosFormulario.producto,
-        precio: parseFloat(precio),
+        precio: datosFormulario.precio,
         tipoVenta: datosFormulario.tipoVenta,
         publicidad: datosFormulario.publicidad,
         garantia: datosFormulario.garantia,

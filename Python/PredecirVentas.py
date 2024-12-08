@@ -27,23 +27,20 @@ if not datos_json:
     print("No se encontraron datos en el archivo JSON.")
 else:
     print(f"Datos cargados del archivo JSON: {datos_json}")
-    
-    
-#/////////////////////////////////////////////////
-for dato in datos_json:
-    # Asignar valores del JSON a variables
-    mes = dato.get('mes', 0)
-    producto = dato.get('producto', 0)
-    precio = dato.get('precio', 0)
-    tipo_venta = dato.get('tipoVenta', 0)
-    publicidad = dato.get('publicidad', 0)
-    garantia = dato.get('garantia', 0)
-    descuento = dato.get('descuento', 0)
-    edad_media = dato.get('edadMedia', 0)
-    genero_segmento = dato.get('generoSegmento', 0)
-    pais = dato.get('pais', 0)
-    puntos_venta = dato.get('puntosVenta', 0)
-    canales = dato.get('canales', 0)
+
+    # Asignar valores del JSON a variables (ya que es un solo objeto, no necesitas iterar)
+    mes = datos_json.get('mes', 0)
+    producto = datos_json.get('producto', 0)
+    precio = datos_json.get('precio', 0)
+    tipo_venta = datos_json.get('tipoVenta', 0)
+    publicidad = datos_json.get('publicidad', 0)
+    garantia = datos_json.get('garantia', 0)
+    descuento = datos_json.get('descuento', 0)
+    edad_media = datos_json.get('edadMedia', 0)
+    genero_segmento = datos_json.get('generoSegmento', 0)
+    pais = datos_json.get('pais', 0)
+    puntos_venta = datos_json.get('puntosVenta', 0)
+    canales = datos_json.get('canales', 0)
 
     # Imprimir las variables para verificar
     print(f"""
@@ -60,13 +57,13 @@ for dato in datos_json:
     Puntos de Venta: {puntos_venta}
     Canales: {canales}
     """)
-    
-    nueva_entrada_base = np.array([[mes, producto, precio, descuento, publicidad, puntos_venta,
-                               edad_media, genero_segmento, pais, garantia, canales, 0, tipo_venta, 1]])
-    
-    
-      #print("Nueva entrada para el modelo:", nueva_entrada_base)
 
+    # Convertir los datos a un array numpy para el modelo
+    nueva_entrada_base = np.array([[mes, producto, precio, descuento, publicidad, puntos_venta,
+                                    edad_media, genero_segmento, pais, garantia, canales,887, tipo_venta]])  #se elimino cantidad veddida 
+  
+
+ 
 # Cargar el modelo y el escalador
 modelo = load_model('mi_modelo.keras')
 scaler = joblib.load('escalador.pkl')
@@ -83,7 +80,7 @@ def ajustar_mes(entrada_base, mes):
     return entrada_modificada
 
 # Generar predicciones para los meses: actual, anterior, siguiente, etc.
-mes_actual = 12
+mes_actual = mes
 meses_a_predecir = [
     (mes_actual - 2 - 1) % 12 + 1,  # Mes anterior al anterior
     (mes_actual - 1 - 1) % 12 + 1,  # Mes anterior
@@ -107,9 +104,9 @@ for mes, valor in predicciones.items():
     print(f"Mes {mes}: Predicción de ingresos {valor}")
 
 # Opcional: usar datos del JSON para enriquecer las predicciones
-for dato in datos_json:
+#for dato in datos_json:
     # Ejemplo: incorporar datos del JSON en las predicciones
-    print(f"Usando dato adicional del JSON: {dato}")
+  #  print(f"Usando dato adicional del JSON: {dato}")
 
 
 
