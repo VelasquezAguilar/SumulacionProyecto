@@ -1,49 +1,5 @@
-/*function addIncomeRow() {
-  // Obtener la tabla usando la clase en lugar de un ID
-  const table = document.querySelector('.income-table');
-
-  // Crear una nueva fila
-  const newRow = document.createElement('tr');  // Crear la fila <tr>
-  newRow.classList.add('OTROS');  // Agregar la clase 'OTROS' a la fila <tr>
-
-
-  // Crear la primera celda (Descripción de ingreso) con un input de texto
-  const cellLabel = document.createElement('td');
-  const descriptionInput = document.createElement('input');
-  descriptionInput.type = 'text';
-  descriptionInput.placeholder = 'Descripción del ingreso';
-  descriptionInput.style.width = '150px'; // Ajustar el ancho según sea necesario
-  descriptionInput.required = true; // Asegura que el campo no quede vacío
-
-  cellLabel.appendChild(descriptionInput);
-  newRow.appendChild(cellLabel);
-
-  // Obtener la longitud dinámica según el número de columnas actuales
-  const headerCells = table.querySelectorAll('thead tr th');
-  const storedLength = headerCells.length - 1; // Restar 1 porque la primera columna es "MESES"
-
-  // Crear inputs para las columnas de los meses
-  for (let i = 0; i < storedLength; i++) {
-    const cell = document.createElement('td');
-    const input = document.createElement('input');
-    input.type = 'float';
-    input.min = '0';
-    input.placeholder = '0';
-    //input.value = '0.0'; // Valor por defecto
-    input.style.width = '100px'; // Ajustar ancho si es necesario
-    input.required = false;
-
-    cell.appendChild(input);
-    newRow.appendChild(cell);
-
-  }
-  
- 
-  // Insertar la nueva fila antes de la fila "OTROS INGRESOS"
-  const lastRow = table.querySelector('tbody tr:last-child');
-  table.tBodies[0].insertBefore(newRow, lastRow);
-
-}*/// Función para inicializar la tabla con datos desde localStorage
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////// Función para inicializar la tabla con datos desde localStorage///////////////////////////////
 function inicializarTablaDesdeLocalStorage() {
   const table = document.querySelector('.income-table');
   const datosTabla = JSON.parse(localStorage.getItem('datosOtrosIngresos')) || [];
@@ -83,7 +39,12 @@ function inicializarTablaDesdeLocalStorage() {
   });
 }
 
-// Función para guardar los datos de la tabla en localStorage
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////// Función para guardar los datos de la tabla en localStorage///////////////////////////////
+
 function actualizarLocalStorage() {
   const table = document.querySelector('.income-table');
   const rows = table.querySelectorAll('tbody tr.OTROS');
@@ -99,6 +60,8 @@ function actualizarLocalStorage() {
   localStorage.setItem('datosOtrosIngresos', JSON.stringify(datosTabla));
   actualizarTotalesDesdeLocalStorage();
 }
+
+
 
 // Función para agregar una nueva fila
 function addIncomeRow() {
@@ -154,138 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
-/*
-document.addEventListener("DOMContentLoaded", () => {
-  const monthMap = {
-    1: "Enero",
-    2: "Febrero",
-    3: "Marzo",
-    4: "Abril",
-    5: "Mayo",
-    6: "Junio",
-    7: "Julio",
-    8: "Agosto",
-    9: "Septiembre",
-    10: "Octubre",
-    11: "Noviembre",
-    12: "Diciembre",
-  };
 
-  // Función para cargar los datos desde la API
-  async function loadPredictions() {
-    try {
-      const response = await fetch("/obtenerVentasPronosticadas");
-
-      if (!response.ok) {
-        throw new Error(`Error en la API: ${response.status} ${response.statusText}`);
-      }
-
-      const data = await response.json();
-      renderTable(data);
-    } catch (error) {
-      console.error("Error al cargar predicciones:", error);
-    }
-  }
-
-  // Función para renderizar la tabla con la columna de porcentajes fija
-  function renderTable(predictions) {
-    const monthsRow = document.getElementById("monthsRow");
-    const salesRow = document.querySelector("#incomeTable tbody tr");
-    const cashSalesRow = document.querySelector("#incomeTable tbody td ");
-
-    // Limpiar contenido previo
-    monthsRow.innerHTML = "";
-    salesRow.innerHTML = "";
-    cashSalesRow.innerHTML = "";
-
-    // Agregar columna fija para los porcentajes
-    const percentageHeader = document.createElement("th");
-    percentageHeader.textContent = "Tipo de porcentaje";
-    monthsRow.appendChild(percentageHeader);
-
-    const percentageCell = document.createElement("td");
-    percentageCell.textContent = "Ventas Pronosticadas";
-    salesRow.appendChild(percentageCell);
-
-   const cashCellHeader = document.createElement("th");
-    cashCellHeader.textContent = "Ventas en efectivo";
-    cashSalesRow.appendChild(cashCellHeader);
-
-
-    // Iterar sobre las predicciones
-    for (const [monthNumber, value] of Object.entries(predictions)) {
-      const monthName = monthMap[parseInt(monthNumber)];
-
-      // Crear y agregar encabezado del mes
-      const th = document.createElement("th");
-      th.textContent = monthName;
-      monthsRow.appendChild(th);
-
-      // Crear y agregar celda de ventas pronosticadas
-      const td = document.createElement("td");
-      td.textContent = value.toFixed(2); // Mostrar con dos decimales
-      salesRow.appendChild(td);
-
-
-      // Crear celda para ventas en efectivo (se actualizará dinámicamente)
-      const cashCell = document.createElement("td");
-      cashCell.id = `cashMonth${monthNumber}`; // ID único para cada mes
-      cashCell.textContent = "0.00"; // Inicializado a 0
-      cashSalesRow.appendChild(cashCell);
-    }
-  }
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////Funcion para actualizar valores de fila ventas efect //////////////////////////////
-
-function updateSalesValues() {
-  const cashPercentage = parseFloat(document.getElementById("cashPercentage").value) / 100;
-
-  // Iterar sobre las predicciones y actualizar la fila de ventas en efectivo
-  for (const [monthNumber, value] of Object.entries(predictions)) {
-    const cashValue = (value * cashPercentage).toFixed(2);
-    const cashCell = document.getElementById(`cashMonth${monthNumber}`);
-    if (cashCell) {
-      cashCell.textContent = cashValue;
-    }
-  }
-}
-
-// Actualizar los valores al cambiar el porcentaje
-document.getElementById("cashPercentage").addEventListener("input", updateSalesValues);
-  /////////////////////////////////////////////////////////////////////////////////
-  // Ejecución inicial para cargar los datos
-  loadPredictions();
-
-  // Resto del código para porcentajes
-  const defaultPercentages = {
-    cash: 45,
-    oneMonth: 34,
-    twoMonths: 21,
-  };
-
-  document.getElementById("cashPercentage").value = defaultPercentages.cash;
-  document.getElementById("oneMonthPercentage").value = defaultPercentages.oneMonth;
-  document.getElementById("twoMonthsPercentage").value = defaultPercentages.twoMonths;
-
-  function updateRemainingPercentage() {
-    const cash = parseFloat(document.getElementById("cashPercentage").value);
-    const oneMonth = parseFloat(document.getElementById("oneMonthPercentage").value);
-    const remaining = 100 - (cash + oneMonth);
-
-    if (remaining >= 0) {
-      document.getElementById("twoMonthsPercentage").value = remaining;
-      document.getElementById("errorMessage").style.display = "none";
-    } else {
-      document.getElementById("errorMessage").style.display = "block";
-    }
-  }
-
-  document.getElementById("cashPercentage").addEventListener("input", updateRemainingPercentage);
-  document.getElementById("oneMonthPercentage").addEventListener("input", updateRemainingPercentage);
-
-  
-});
-*/
 
 // Función para cargar los datos desde la API
 async function loadPredictions() {
@@ -496,48 +328,9 @@ function updateCashRow() {
 
 
 
-  /*
-    function actualizarTotalesDesdeLocalStorage() {
-      // Obtener los datos almacenados en localStorage
-      let datosTabla = JSON.parse(localStorage.getItem('datosTabla')) || [];
-      
-      // Verificar si hay datos
-      if (!Array.isArray(datosTabla) || datosTabla.length === 0) {
-          console.warn('No hay datos válidos en localStorage.');
-          return;
-      }
+ 
   
-      // Seleccionar la fila con clase "total"
-      let filaTotal = document.querySelector('tr.total');
   
-      if (!filaTotal) {
-          console.error('No se encontró la fila con clase "total".');
-          return;
-      }
-  
-      // Obtener todas las celdas de la fila "total"
-      let celdasTotal = filaTotal.querySelectorAll('td');
-  
-      // Iterar sobre las columnas 2 a 6 (índices 1 a 5 en datosTabla)
-      for (let colIndex = 2; colIndex <= 6; colIndex++) {
-          let sumaColumna = 0;
-  
-          // Sumar los valores de la columna correspondiente en todos los objetos
-          datosTabla.forEach(obj => {
-              let valor = parseFloat(obj[`columna${colIndex}`]) || 0; // Convertir a número o asignar 0
-              sumaColumna += valor;
-          });
-  
-          // Insertar el valor calculado en el TD correspondiente
-          if (celdasTotal[colIndex - 1]) { // Restar 1 para obtener el índice en celdasTotal
-              celdasTotal[colIndex - 1].textContent = sumaColumna.toFixed(2); // Formatear a 2 decimales
-          } else {
-              console.warn(`No se encontró la celda para la columna ${colIndex}.`);
-          }
-      }
-  }
-  
-  */
 } function actualizarTotalesDesdeLocalStorage() {
   // Obtener los datos almacenados en localStorage
   let datosTabla = JSON.parse(localStorage.getItem('datosTabla')) || [];
@@ -601,45 +394,8 @@ function updateCashRow() {
 
 
 
-// Recalcular totales (si aplica)
-//calculateTotals();
-//calculateColumnSums() ;
 
 
-
-/*
-// Función para calcular los totales (no cambia)
-function calculateTotals() {
-  const rows = document.querySelectorAll(".income-table tbody tr:not(.total)");
-  const totalRow = document.querySelector(".income-table tbody tr.total");
-  const columnCount = document.querySelectorAll(".income-table thead th").length - 1; // Excluir encabezado "MESES"
-
-  for (let i = 0; i < columnCount; i++) {
-     //let totalRow = i;
-    let total = 0;
-    rows.forEach(row => {
-      const cell = row.children[i + 1]; // Ignorar primera celda
-      if (cell) {
-        // Obtener el valor numérico de la celda, si no es un número, tomarlo como 0
-        const value = parseFloat(cell.textContent);
-        total += isNaN(value) ? 0 : value; // Si no es un número, tomarlo como 0
-      }
-      console.log("Suma va por :" +total)
-    });
-    console.log("Contenido de totalRow en el if: " + totalRow);
-    console.log("Contenido de taal :"+total)
-    appendCell(totalRow, total.toFixed(2));
-  }
-}
-
-// Agregar celda a una fila
-function appendCell(row, content) {
-  console.log("El contenido de row es:" + row  + " y el de content es : " + content);
-  const td = document.createElement("td");
-  td.textContent = content;
-  row.appendChild(td);
-  console.log(row.appendChild(td));
-}*/
 ////////////////////////////////////////////////////////////////////////
 document.addEventListener("input", (event) => {
   if (event.target.classList.contains("cash-percentage") ||
@@ -675,25 +431,7 @@ function updateRemainingPercentage() {
 }
 
 // Función para recalcular la suma
-function recalcularSuma() {
-  let celdas = document.querySelectorAll(" tbody tr:not(:first-child) ");
-  //celdas.forEach((celda, index) => {
-  //  console.log("Contenido de la celda en la posición " + index + ": " + celda.textContent.trim());
-  //});
 
-  let suma = 0;
-
-  celdas.forEach(celda => {
-    suma += parseFloat(celda.textContent) || 0;
-    console.log("La suma es :" + suma);
-  });
-
-  // Seleccionar la fila y actualizar el total
-  let celdaTotal = document.querySelector("tr .total").parentElement.querySelectorAll("td")[1];
-  celdaTotal.textContent = suma;
-  guardarDatosEnLocalStorage();
-
-}
 
 
 

@@ -32,14 +32,41 @@ body {
     text-align: center;
   }
   
-  .btn-continuar {
+  /*.btn-continuar {
     background-color: #e74c3c;
     color: white;
     border: none;
     padding: 10px 20px;
     margin-top: 20px;
     cursor: pointer;
-  }
+    dis
+  }*/
+
+  /* Estilo del botón */
+  .btn-continuar {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #e74c3c; /* Color llamativo */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease; /* Transiciones para los efectos */
+ /* Asegura que esté sobre otros elementos */
+}
+
+/* Efecto al pasar el mouse */
+.btn-continuar:hover {
+  background-color: #c0392b; /* Cambiar a un tono más oscuro */
+  transform: translateX(-50%) scale(1.1); /* Aumentar tamaño ligeramente */
+  box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.2); /* Más sombra */
+}
+
   
   button {
     background-color: #3498db;

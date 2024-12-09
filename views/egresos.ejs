@@ -5,118 +5,374 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Presupuesto de Egresos</title>
     <link rel="stylesheet" href="/css/egresos.css">
+    <link rel="stylesheet" href="/css/menu.css">
 </head>
-<body>
-    <body>
-        <div class="container">
+<style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      display: flex;
+      background-color: #f4f4f4;
+      height: 100vh;
+    }
+  
+    /* Estilos para el menú lateral */
+    .sidebar {
+      width: 80px;
+      background-color: #2c3e50;
+      padding: 20px 10px;
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+  
+    .sidebar.expanded {
+      width: 250px;
+    }
+  
+    .sidebar h2 {
+      font-size: 1.2em;
+      margin-bottom: 20px;
+      text-align: center;
+      color: #fff;
+      display: none;
+    }
+  
+    .sidebar.expanded h2 {
+      display: block;
+    }
+  
+    .sidebar a {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      margin-bottom: 10px;
+      text-decoration: none;
+      color: #ccc;
+      font-size: 1.2em;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+  
+    .sidebar a i {
+      font-size: 1.5em;
+      /* Tamaño más pequeño de íconos */
+      margin-right: 10px;
+      transition: transform 0.2s ease;
+    }
+  
+    .sidebar a:hover {
+      background-color: #34495e;
+      color: #fff;
+    }
+  
+    .sidebar a:hover i {
+      transform: scale(1.2);
+    }
+  
+    .sidebar .link-text {
+      display: none;
+      margin-left: 10px;
+      font-size: 1em;
+    }
+  
+    .sidebar.expanded .link-text {
+      display: inline;
+    }
+  
+    .sidebar a:hover .link-text {
+      display: inline;
+    }
+  
+    .sidebar .toggle-btn {
+      position: absolute;
+      top: 10px;
+      right: -30px;
+      font-size: 1.8em;
+      color: #fff;
+      cursor: pointer;
+    }
+  
+    /* Estilos para el contenido principal */
+    .main-content {
+      flex-grow: 1;
+      padding: 20px;
+      overflow-y: auto;
+      padding-left: 220px;
+    }
+  
+    .main-content h1 {
+      text-align: center;
+    }
+  
+    .container {
+      max-width: 1200px;
+      margin: auto;
+  
+      background: #fff;
+      padding: 20px 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+  
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+  
+    .header h1 {
+      font-size: 1.5em;
+      color: #333;
+    }
+  
+    .form-container {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+  
+    .form-group {
+      flex: 1 1 45%;
+      margin-bottom: 15px;
+    }
+  
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      font-size: 0.9em;
+    }
+  
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px;
+      font-size: 1em;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background: #f9f9f9;
+    }
+  
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+  
+    .buttons button {
+      padding: 10px 20px;
+      font-size: 1em;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  
+    .save-button {
+      background: #d32f2f;
+      color: #fff;
+    }
+  
+    .cancel-button {
+      background: #ddd;
+      color: #333;
+    }
+  
+    .save-button:hover {
+      background: #b71c1c;
+    }
+  
+    .cancel-button:hover {
+      background: #bbb;
+    }
+  
+    .iframe-ubi {
+      width: 100%;
+      height: 250px;
+      border: 0;
+    }
+  </style>
+  
+  <body>
+  
+  
+  
+    <div class="menu">
+      <ion-icon name="menu-outline"></ion-icon>
+      <ion-icon name="close-outline"></ion-icon>
+    </div>
+  
+    <div class="barra-lateral">
+      <div>
+        <div class="nombre-pagina">
+          <ion-icon id="logo" name="logo-firefox"></ion-icon>
+          <span>SIMULA</span>
+        </div>
+        <button class="boton">
+          <ion-icon name="add-outline"></ion-icon>
+          <span>Crear nuevo</span>
+        </button>
+      </div>
+  
+      <nav class="navegacion">
+        <ul>
+          <li>
+            <a id="inbox" href="http://localhost:3030/">
+              <ion-icon name="mail-unread-outline"></ion-icon>
+              <span>Inicio</span>
+            </a>
+          </li>
+          <li>
+            <a href="http://localhost:3030/formulario">
+              <ion-icon name="star-outline"></ion-icon>
+              <span>Proyeccion</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <ion-icon name="paper-plane-outline"></ion-icon>
+              <span>Sent</span>
+            </a>
+          </li>
+          <li>
+            <a href="http://localhost:3030/basesDatos">
+              <ion-icon name="document-text-outline"></ion-icon>
+              <span>Bases Datos</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <ion-icon name="bookmark-outline"></ion-icon>
+              <span>Historial</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <ion-icon name="alert-circle-outline"></ion-icon>
+              <span>Spam</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <ion-icon name="trash-outline"></ion-icon>
+              <span>Trash</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+  
+      <div>
+        <div class="linea"></div>
+  
+        <div class="modo-oscuro">
+          <div class="info">
+            <ion-icon name="moon-outline"></ion-icon>
+            <span>Drak Mode</span>
+          </div>
+          <div class="switch">
+            <div class="base">
+              <div class="circulo"></div>
+            </div>
+          </div>
+        </div>
+  
+        <div class="usuario">
+          <!--<img src="img/avatar-user-x640.jpg" alt="">-->
+          <div class="info-usuario">
+            <div class="nombre-email">
+              <span class="nombre">User</span>
+              <span class="email">user@mail.com</span>
+            </div>
+            <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+          </div>
+        </div>
+      </div>
+  
+    </div>
+        <div class="contenedor">
             <h1 class="titulo">Presupuesto de Egresos</h1>
             <p class="texto1Info">Para una predicción más precisa de los egresos, es necesario ingresar el total de ingresos correspondientes a la última compra del mes anterior al seleccionado. Esto garantiza que las estimaciones reflejen de manera más realista las tendencias recientes.</p>
             <p class="texto2Info">La tabla permite al usuario interactuar agregando y modificando estimaciones de otros egresos según sea necesario. Se recomienda incluir información detallada sobre pagos recurrentes, como alquiler de local, sueldos, intereses, compras de maquinaria y abonos a capital. Estas estimaciones deben realizarse en función de las capacidades y actividades actuales del usuario, con el fin de obtener un presupuesto más completo y realista que se ajuste a su situación específica.</p>
-            <table id="egresosTable">
+            <p class="texto2Info"> A continuacion puede indicar el porcentaje del cotos de compras con respecto a ventas  o ingresar manualmente los gastos incurridos en compra </p>
+             
+            <div>
+                Indicar porcentaje 
+                <input type="number" id="porcentaje" name="porcentaje" placeholder="70" min="0" max="100">
+                <button class = porcentajeactualizar">Aplicar</button>
+            </div>
+            <!--Tabla de egresos-->
+            <table class="income-table" border="1">
                 <thead>
                     <tr>
                         <th>MES</th>
-                        <th>ENERO</th>
-                        <th>FEBRERO</th>
-                        <th>MARZO</th>
-                        <th>ABRIL</th>
-                        <th>MAYO</th>
+                        <!-- Los meses se insertarán dinámicamente aquí -->
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>Compras</td>
-                        <td>140,000</td>
-                        <td>210,000</td>
-                        <td>280,000</td>
-                        <td>350,000</td>
-                        <td>70,000</td>
+                        <!-- Las celdas de las ventas se insertarán dinámicamente aquí -->
+          
                     </tr>
-                    <tr class="highlight">
-                        <td>Compras en efectivo (70%)</td>
-                        <td>14,000</td>
-                        <td>21,000</td>
-                        <td>28,000</td>
-                        <td>35,000</td>
-                        <td>7,000</td>
+                    <tr class="CE">
+                        <td>Compras en efectivo 
+                            <input type="number" class="cash-percentage" value="60" min="0" max="100"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                         <!--<td colspan="5"></td>-->
                     </tr>
-                    <tr class="highlight">
-                        <td>Vencimiento a un mes (10%)</td>
+                    <tr class="CV1M">
+                        <td>Vencimiento a un mes 
+                            <input type="number" class="one-month-percentage" value="25" min="0" max="100"></td>
                         <td></td>
-                        <td>98,000</td>
-                        <td>147,000</td>
-                        <td>196,000</td>
-                        <td>245,000</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                         <!--<td colspan="5"></td>-->
                     </tr>
-                    <tr class="highlight">
-                        <td>Vencimiento a dos meses (20%)</td>
+                    <tr class="CV2M">
+                        <td>Vencimiento a dos meses 
+                            <input type="number" class="two-months-percentage" value="21" min="0" max="100" ></td>
                         <td></td>
                         <td></td>
-                        <td>28,000</td>
-                        <td>42,000</td>
-                        <td>56,000</td>
-                        <!--<td colspan="5"></td>-->
-                    </tr>
-                    <tr>
-                        <td>Otros Egresos</td>
-                        <td colspan="5"></td>
-                    </tr>
-                    <tr>
-                        <td>Egreso 1</td>
                         <td></td>
                         <td></td>
-                        <td>118,000</td>
-                        <td>228,000</td>
-                        <td>138,000</td>
+                        <td></td>
                         <!--<td colspan="5"></td>-->
                     </tr>
                     <tr>
-                        <td>Intereses</td>
-                        <td></td>
-                        <td ></td>
-                        <td >15,000</td>
-                        <td >15,000</td>
-                        <td >15,000</td>
+                        <td>OTROS EGRESOS</td>
+                        <td colspan="9999">
+                            <button  onclick="addIncomeRow()">+ Registrar Egresos</button>
+                        </td>
                     </tr>
-                    <tr class="highlight">
+                    <tr class="total">
                         <td>TOTAL EGRESOS</td>
                         <td></td>
                         <td></td>
-                        <td>336,000</td>
-                        <td>516,000</td>
-                        <td>556,000</td>
-                        <!--<td colspan="3"></td>-->
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <!--<td colspan="5"></td>-->
                     </tr>
+                    
                 </tbody>
             </table>
           <!----  <button class="button" onclick="agregarColumna()">Agregar Columna</button>-->
-          <button class="btn-continuar"><a href="http://localhost:3030/neteo">Realizar NETEO</a></button>
+          <button class="btn-continuar" onclick="window.location.href='http://localhost:3030/neteo'">Realizar NETEO</button>
+          
         </div>
-    
-        <script>
-            function agregarColumna() {
-                // Obtener la tabla
-                const table = document.getElementById('egresosTable');
-                const rows = table.rows;
-    
-                // Crear encabezado para la nueva columna
-                const nuevoMes = prompt("Ingrese el nombre del nuevo mes o columna:");
-                if (!nuevoMes) return;
-    
-                // Agregar encabezado
-                const th = document.createElement('th');
-                th.textContent = nuevoMes.toUpperCase();
-                rows[0].appendChild(th);
-    
-                // Agregar celdas vacías a cada fila
-                for (let i = 1; i < rows.length; i++) {
-                    const td = document.createElement('td');
-                    td.textContent = ''; // Puedes dejar esto vacío o con un valor predeterminado
-                    rows[i].appendChild(td);
-                }
-            }
-        </script>
+        <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+        <script src="/js/menu.js"></script>
+        <script src="../js/egresos.js"></script>
+        
     </body>
 </html>

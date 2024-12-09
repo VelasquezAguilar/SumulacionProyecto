@@ -1,14 +1,14 @@
 {
   "mes": 6,
-  "producto": "1",
-  "precio": "4557",
-  "tipoVenta": "0",
+  "producto": "3",
+  "precio": "4500",
+  "tipoVenta": "1",
   "publicidad": "0",
   "garantia": "0",
-  "descuento": "0",
-  "edadMedia": 21.5,
-  "generoSegmento": "0",
-  "pais": "6",
-  "puntosVenta": "0",
-  "canales": "0"
+  "descuento": "1",
+  "edadMedia": 1,
+  "generoSegmento": "2",
+  "pais": "4",
+  "puntosVenta": "2",
+  "canales": "1"
 }
