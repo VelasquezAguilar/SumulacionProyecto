@@ -157,13 +157,22 @@ function renderTable(data) {
     return;
   }
 
-  // Renderizar encabezado
-  headerRow.innerHTML = "<th>MESES</th>";
-  Object.keys(data).forEach(month => {
+ // Renderizar encabezado
+headerRow.innerHTML = "<th>MESES</th>";
+const mesesEncabezado = []; // Arreglo para almacenar los meses
+
+Object.keys(data).forEach(month => {
     const th = document.createElement("th");
     th.textContent = monthNames[parseInt(month)];
     headerRow.appendChild(th);
-  });
+
+    // Agregar el mes al arreglo
+    mesesEncabezado.push(monthNames[parseInt(month)]);
+});
+
+// Guardar los meses en el localStorage
+localStorage.setItem('mesesActualPrediccion', JSON.stringify(mesesEncabezado));
+
 
   // Renderizar fila de pronósticos
   forecastRow.innerHTML = "<td>Ventas Pronosticadas</td>";
